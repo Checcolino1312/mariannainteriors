@@ -51,7 +51,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
             fit={service.id === "mappa" ? "contain" : "cover"}
             note="Immagini illustrative · AI"
           />
-          <div className="detail-copy">
+          <div className="detail-copy" data-reveal-group>
             <p className="eyebrow">
               <span className="number">{service.number}</span>
               {service.eyebrow}
@@ -120,7 +120,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
           <h2 id="other-services-title" className="eyebrow">
             Altri percorsi
           </h2>
-          <ul>
+          <ul data-reveal-group>
             {others.map((s) => (
               <li key={s.id}>
                 <Link href={servicePath(s)}>

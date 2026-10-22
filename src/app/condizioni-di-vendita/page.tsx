@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="page-offset">
-      <article className="wrap legal">
+      <article className="wrap legal" data-reveal-group>
         <p className="eyebrow">Informazioni</p>
         <h1>Condizioni di vendita</h1>
 

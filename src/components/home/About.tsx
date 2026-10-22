@@ -7,18 +7,20 @@ export function About() {
   return (
     <section id="chi-sono" className="section wrap" aria-labelledby="chi-sono-title">
       <div className="about">
-        <div className="about-intro" data-reveal>
-          <p className="eyebrow">03 / Il mio approccio</p>
-          <h2 id="chi-sono-title">
+        <div className="about-intro">
+          <p className="eyebrow" data-reveal>
+            03 / Il mio approccio
+          </p>
+          <h2 id="chi-sono-title" data-reveal>
             Piacere,
             <br />
             <em>sono Marianna.</em>
           </h2>
-          <div className="about-portrait">
+          <div className="about-portrait" data-reveal="image">
             <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="240px" />
           </div>
         </div>
-        <div className="about-copy" data-reveal>
+        <div className="about-copy" data-reveal-group>
           <h3>Ti aiuto a dare una direzione alle idee e forma ai tuoi spazi.</h3>
           <p>
             Mi sono formata in architettura e ho scelto di dedicarmi all’interior design: all’organizzazione degli spazi e
@@ -53,10 +55,12 @@ export function About() {
       </div>
 
       <div className="process">
-        <h3 className="eyebrow">Come lavoriamo insieme</h3>
-        <ol className="process-grid">
+        <h3 className="eyebrow" data-reveal="fade">
+          Come lavoriamo insieme
+        </h3>
+        <ol className="process-grid" data-reveal-group>
           {PROCESS.map((step, i) => (
-            <li className="process-item" key={step.title} data-reveal>
+            <li className="process-item" key={step.title}>
               <span className="number" aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -78,7 +82,7 @@ export function About() {
             <em>risposta utile.</em>
           </h2>
         </div>
-        <div>
+        <div data-reveal-group>
           {FAQ.map((item) => (
             <details key={item.q}>
               <summary>{item.q}</summary>

@@ -3,7 +3,7 @@ import { Montserrat, Playfair_Display } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { REVEAL_BOOT, ScrollReveal } from "@/components/ScrollReveal";
 import { siteSchema } from "@/lib/schema";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -53,7 +53,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="it" className={`${serif.variable} ${sans.variable}`}>
+    // suppressHydrationWarning: REVEAL_BOOT aggiunge la classe "reveal-ready" prima dell'idratazione.
+    <html lang="it" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
+      </head>
       <body>
         <a className="skip" href="#contenuto">
           Vai al contenuto

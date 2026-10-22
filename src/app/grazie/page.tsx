@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ThankYouPage() {
   return (
     <div className="page-offset">
-      <article className="wrap legal thank-you">
+      <article className="wrap legal thank-you" data-reveal-group>
         <Suspense fallback={<ThankYouContent />}>
           <ThankYou />
         </Suspense>

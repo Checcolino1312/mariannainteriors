@@ -80,10 +80,10 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
         <div id="spaces" className="gallery" role="tabpanel" aria-labelledby="tab-spaces" hidden={active !== "spaces"}>
           {FIGURES.map((f) => (
             <figure key={f.title}>
-              <div className="gallery-image">
+              <div className="gallery-image" data-reveal="image">
                 <Image src={f.image.src} alt={f.alt} fill sizes="(max-width: 620px) 100vw, 50vw" />
               </div>
-              <figcaption className="figure-copy">
+              <figcaption className="figure-copy" data-reveal>
                 <div>
                   <p className="eyebrow">{f.eyebrow}</p>
                   <h3>{f.title}</h3>
@@ -100,8 +100,9 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
             label="Immagini della mappa di stile"
             className="style-gallery"
             sizes="(max-width: 620px) 100vw, 50vw"
+            reveal
           />
-          <div>
+          <div data-reveal-group>
             <p className="eyebrow">Esempio illustrativo / Direzione naturale</p>
             <div className="palette" role="img" aria-label="Palette: beige, burro, terracotta e noce">
               <span />
@@ -127,7 +128,7 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
             </Link>
           </div>
         </div>
-        <p className="image-note">
+        <p className="image-note" data-reveal="fade">
           Esempi illustrativi con immagini AI. Mostrano una direzione visiva e non sono fotografie di progetti realizzati.
         </p>
       </div>

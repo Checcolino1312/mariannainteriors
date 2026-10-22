@@ -30,9 +30,9 @@ export function Services() {
           Scegli il supporto di cui hai bisogno, nel momento in cui ti serve.
         </p>
       </div>
-      <div className="services">
+      <div className="services" data-reveal-group>
         {SERVICES.map((s) => (
-          <article key={s.id} id={s.id} className="service" data-reveal>
+          <article key={s.id} id={s.id} className="service">
             <p className="eyebrow">
               <span className="number">{s.number}</span>
               {s.eyebrow}

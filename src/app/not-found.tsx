@@ -4,7 +4,7 @@ import { Monogram } from "@/components/brand/Logo";
 export default function NotFound() {
   return (
     <div className="page-offset">
-      <section className="wrap not-found">
+      <section className="wrap not-found" data-reveal-group>
         <Monogram className="not-found-mark" />
         <p className="eyebrow">Errore 404</p>
         <h1>

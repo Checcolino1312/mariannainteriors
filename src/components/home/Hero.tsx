@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <div id="inizio" className="wrap">
       <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy" data-reveal>
+        <div className="hero-copy" data-reveal-group>
           <p className="eyebrow">Consulenze e progetti di interior design online</p>
           <h1 id="hero-title">
             Il tuo spazio,
@@ -34,8 +34,9 @@ export function Hero() {
             sizes="(max-width: 620px) 100vw, 50vw"
             counterLabel="Spazi da abitare"
             note="Immagine d’atmosfera · AI"
+            reveal
           />
-          <span className="vertical" aria-hidden="true">
+          <span className="vertical" aria-hidden="true" data-reveal="fade">
             I miei progetti
           </span>
         </div>

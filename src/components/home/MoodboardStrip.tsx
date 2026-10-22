@@ -13,7 +13,7 @@ export function MoodboardStrip() {
     </div>
   );
   return (
-    <section className="moodboard-strip" aria-label="Galleria di moodboard">
+    <section className="moodboard-strip" aria-label="Galleria di moodboard" data-reveal="fade">
       <div className="moodboard-track">
         {group(false)}
         {group(true)}

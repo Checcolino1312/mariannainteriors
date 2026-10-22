@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer id="contatti" className="footer">
       <div className="footer-inner">
-        <div className="footer-main">
+        <div className="footer-main" data-reveal>
           <Link className="footer-logo" href="/" aria-label="Marianna Interiors, torna alla home">
             <Lockup tone="dark" />
           </Link>

@@ -15,12 +15,14 @@ type Props = {
   /** Didascalia sotto l'immagine: contatore ("01 / 02" o "01 / {counterLabel}") e nota a destra. */
   counterLabel?: string;
   note?: string;
+  /** Animazione d'ingresso "a tendina" dell'immagine (vedi ScrollReveal). */
+  reveal?: boolean;
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /** Galleria accessibile con dissolvenza incrociata, frecce e navigazione da tastiera. */
-export function Carousel({ slides, label, className = "", sizes, eager, fit = "cover", counterLabel, note }: Props) {
+export function Carousel({ slides, label, className = "", sizes, eager, fit = "cover", counterLabel, note, reveal }: Props) {
   const [index, setIndex] = useState(0);
   const total = slides.length;
   const go = (step: number) => setIndex((i) => (i + step + total) % total);
@@ -34,7 +36,7 @@ export function Carousel({ slides, label, className = "", sizes, eager, fit = "c
 
   return (
     <div className={`carousel ${className}`} role="region" aria-roledescription="carosello" aria-label={label} onKeyDown={onKeyDown}>
-      <div className={`carousel-frame carousel-frame--${fit}`}>
+      <div className={`carousel-frame carousel-frame--${fit}`} data-reveal={reveal ? "image" : undefined}>
         {slides.map((slide, i) => (
           <Image
             key={slide.src}
