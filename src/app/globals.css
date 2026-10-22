@@ -9,7 +9,7 @@
   --paper: #eee9e2; /* Beige — fondo principale */
   --butter: #f4e9b6; /* Burro — solo su noce o terracotta */
   --rust: #ab663c; /* Terracotta — accento */
-  --rust-deep: #8b4f2d; /* Terracotta scura — testi accento su beige (contrasto AA) */
+  --rust-deep: #8b4f2d; /* Terracotta dei testi: l'unica da usare per qualsiasi testo color terracotta */
   --walnut: #402e23; /* Noce — testi e fondi scuri */
   --ink: #402e23;
   --muted: #5f4f43;
@@ -104,7 +104,7 @@ p {
 }
 em {
   font-style: normal;
-  color: var(--rust);
+  color: var(--rust-deep);
 }
 address {
   font-style: normal;
@@ -132,7 +132,7 @@ address {
   margin-bottom: 24px;
 }
 .number {
-  color: var(--rust);
+  color: var(--rust-deep);
   margin-right: 16px;
 }
 /* Icone SVG (src/components/Icons.tsx): misurano 1em e prendono il colore del testo */
@@ -480,7 +480,7 @@ address {
   animation: rise 1s 2.4s var(--ease-out) forwards;
 }
 .intro-wordmark .wordmark-payoff {
-  fill: #7a3f1d;
+  fill: var(--rust-deep);
   opacity: 0;
   animation: rise 1s 2.9s var(--ease-out) forwards;
 }
@@ -596,7 +596,7 @@ address {
 }
 .hero h1 em {
   font-style: italic;
-  color: var(--rust);
+  color: var(--rust-deep);
 }
 .hero-copy > p:not(.eyebrow) {
   margin-top: 28px;
@@ -1139,7 +1139,7 @@ summary::after {
   content: "+";
   font-size: 22px;
   line-height: 1;
-  color: var(--rust);
+  color: var(--rust-deep);
 }
 details[open] summary::after {
   content: "−";
@@ -1353,7 +1353,7 @@ details p {
 .detail-copy h1 {
   font-size: clamp(36px, 3.5vw, 52px);
   line-height: 1.1;
-  color: var(--rust);
+  color: var(--rust-deep);
 }
 .detail-copy h1 span {
   display: block;
@@ -1448,7 +1448,7 @@ details p {
 .other-services .arrow {
   grid-row: 1;
   grid-column: 3;
-  color: var(--rust);
+  color: var(--rust-deep);
 }
 
 /* --- Privacy e 404 ------------------------------------------------------- */
