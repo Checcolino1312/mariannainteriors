@@ -31,7 +31,7 @@ const jobs = [
   const file = path.join(OUT, name);
   mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(file, embedded[i].buffer);
-  console.log("✓", path.relative(ROOT, file));
+  console.log("ok", path.relative(ROOT, file));
 });
 
 // Anteprime dei reel: sono già piccole (263 px) e compresse, quindi si salvano identiche
@@ -40,7 +40,7 @@ const jobs = [
   const file = path.join(OUT, "reel", `reel-${String(n + 1).padStart(2, "0")}.jpg`);
   mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(file, embedded[i].buffer);
-  console.log("✓", path.relative(ROOT, file));
+  console.log("ok", path.relative(ROOT, file));
 });
 
 for (const job of jobs) {
@@ -51,7 +51,7 @@ for (const job of jobs) {
   if (job.width) img = img.resize({ width: job.width, withoutEnlargement: true });
   if (job.flatten) img = img.flatten({ background: job.flatten });
   await img.webp({ quality: job.alpha ? 90 : 82, alphaQuality: 100, effort: 6 }).toFile(file);
-  console.log("✓", path.relative(ROOT, file));
+  console.log("ok", path.relative(ROOT, file));
 }
 
 // Sfondi forniti dalla cliente.
@@ -62,5 +62,5 @@ const backgrounds = [
 for (const bg of backgrounds) {
   const file = path.join(OUT, `${bg.name}.webp`);
   await sharp(path.join(MATERIALE, bg.src)).resize({ width: bg.width }).webp({ quality: 80, effort: 6 }).toFile(file);
-  console.log("✓", path.relative(ROOT, file));
+  console.log("ok", path.relative(ROOT, file));
 }

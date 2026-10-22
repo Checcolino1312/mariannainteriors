@@ -3,6 +3,7 @@
 import { getCalApi } from "@calcom/embed-react";
 import { useRef, type MouseEvent } from "react";
 import { calUrl } from "@/lib/site";
+import { ArrowUpRight } from "@/components/Icons";
 
 const NAMESPACE = "consulenza";
 
@@ -77,9 +78,7 @@ export function BookConsultation({ calLink, label }: { calLink: string; label: s
       onClick={open}
     >
       {label}
-      <span className="arrow" aria-hidden="true">
-        ↗
-      </span>
+      <ArrowUpRight className="arrow" />
     </a>
   );
 }

@@ -1,6 +1,7 @@
 import { HERO_SLIDES } from "@/content/images";
 import { SITE } from "@/lib/site";
 import { Carousel } from "../Carousel";
+import { ArrowUpRight } from "@/components/Icons";
 
 export function Hero() {
   return (
@@ -20,7 +21,7 @@ export function Hero() {
             arredi che funzionano insieme e rispecchiano la tua identità.
           </p>
           <a className="button hero-button" href="#servizi">
-            Scopri il servizio adatto a te <span className="arrow" aria-hidden="true">↗</span>
+            Scopri il servizio adatto a te <ArrowUpRight className="arrow" />
           </a>
           <small>
             {SITE.owner.name} · {SITE.owner.role}

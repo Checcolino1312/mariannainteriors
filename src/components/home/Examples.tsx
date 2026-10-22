@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef, useState, type KeyboardEvent } from "react";
 import { HERO_SLIDES, PROJECT_IMAGES } from "@/content/images";
 import { Carousel } from "../Carousel";
+import { ArrowUpRight } from "@/components/Icons";
 
 const TABS = [
   { id: "spaces", label: "I progetti" },
@@ -124,7 +125,7 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
               consultare per capire cosa introdurre, cosa mantenere e quali alternative seguire.
             </p>
             <Link href={mappaHref} className="text-link">
-              Scopri la mappa di stile <span className="arrow" aria-hidden="true">↗</span>
+              Scopri la mappa di stile <ArrowUpRight className="arrow" />
             </Link>
           </div>
         </div>

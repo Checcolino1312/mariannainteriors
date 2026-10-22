@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Price } from "@/components/home/Services";
 import { SERVICES, getService, servicePath } from "@/content/services";
 import { servicePageSchema } from "@/lib/schema";
+import { ArrowLeft, ArrowUpRight } from "@/components/Icons";
 
 export function generateStaticParams() {
   return SERVICES.map((s) => ({ slug: s.slug }));
@@ -38,7 +39,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
       <article className="service-detail wrap" aria-labelledby="detail-title">
         <nav className="breadcrumb" aria-label="Percorso">
           <Link className="detail-back" href={`/#${service.id}`}>
-            <span aria-hidden="true">←</span> Torna ai servizi
+            <ArrowLeft className="arrow" /> Torna ai servizi
           </Link>
         </nav>
         <div className="detail-grid">
@@ -80,9 +81,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
                   {...(cta.kind === "payment" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   {cta.label}
-                  <span className="arrow" aria-hidden="true">
-                    ↗
-                  </span>
+                  <ArrowUpRight className="arrow" />
                 </a>
               )}
             </div>
@@ -130,9 +129,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
                     {s.price.from ? "da " : ""}
                     {s.price.label}
                   </span>
-                  <span className="arrow" aria-hidden="true">
-                    ↗
-                  </span>
+                  <ArrowUpRight className="arrow" />
                 </Link>
               </li>
             ))}

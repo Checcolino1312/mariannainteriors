@@ -105,7 +105,7 @@ export const WORDMARK = {
 const brandDir = path.join(ROOT, "src", "components", "brand");
 mkdirSync(brandDir, { recursive: true });
 writeFileSync(path.join(brandDir, "paths.ts"), ts);
-console.log("✓ src/components/brand/paths.ts");
+console.log("ok src/components/brand/paths.ts");
 
 // --- Icone
 const appDir = path.join(ROOT, "src", "app");
@@ -125,13 +125,13 @@ function monogramSquare(fill, bg, { padding = 0.16, radius = 0 } = {}) {
 
 // icon.svg: monogramma terracotta su beige, leggibile su tab chiari e scuri.
 writeFileSync(path.join(appDir, "icon.svg"), monogramSquare(COLORS.terracotta, COLORS.beige, { padding: 0.14, radius: 96 }));
-console.log("✓ src/app/icon.svg");
+console.log("ok src/app/icon.svg");
 
 const render = (svg, size) => sharp(Buffer.from(svg)).resize(size, size).png().toBuffer();
 const favSvg = monogramSquare(COLORS.terracotta, COLORS.beige, { padding: 0.12, radius: 96 });
 const ico = await pngToIco(await Promise.all([16, 32, 48].map((s) => render(favSvg, s))));
 writeFileSync(path.join(appDir, "favicon.ico"), ico);
-console.log("✓ src/app/favicon.ico");
+console.log("ok src/app/favicon.ico");
 
 const touchSvg = monogramSquare(COLORS.beige, COLORS.terracotta, { padding: 0.2 });
 writeFileSync(path.join(appDir, "apple-icon.png"), await render(touchSvg, 180));
@@ -139,7 +139,7 @@ writeFileSync(path.join(pub, "icon-192.png"), await render(touchSvg, 192));
 writeFileSync(path.join(pub, "icon-512.png"), await render(touchSvg, 512));
 const maskable = monogramSquare(COLORS.beige, COLORS.terracotta, { padding: 0.28 });
 writeFileSync(path.join(pub, "icon-maskable-512.png"), await render(maskable, 512));
-console.log("✓ apple-icon.png, icon-192/512.png, icon-maskable-512.png");
+console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
 
 // --- Open Graph 1200x630: sfondo materico + lockup centrato (come "logo def.jpg")
 {
@@ -162,5 +162,5 @@ console.log("✓ apple-icon.png, icon-192/512.png, icon-maskable-512.png");
     .composite([{ input: Buffer.from(overlay) }])
     .jpeg({ quality: 86, mozjpeg: true })
     .toFile(path.join(appDir, "opengraph-image.jpg"));
-  console.log("✓ src/app/opengraph-image.jpg");
+  console.log("ok src/app/opengraph-image.jpg");
 }

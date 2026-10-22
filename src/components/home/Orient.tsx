@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ArrowUpRight } from "@/components/Icons";
 
 type Option = { id: string; choice: string; name: string; href: string };
 
@@ -34,9 +35,7 @@ export function Orient({ options }: { options: Option[] }) {
             <h3>{selected.name}</h3>
           </div>
           <Link className="recommend-link" href={selected.href} aria-label={`Scopri: ${selected.name}`}>
-            <span className="arrow" aria-hidden="true">
-              ↗
-            </span>
+            <ArrowUpRight className="arrow" />
           </Link>
         </div>
       </div>

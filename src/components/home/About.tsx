@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FAQ, PROCESS } from "@/content/faq";
 import { PORTRAIT } from "@/content/images";
 import { SITE } from "@/lib/site";
+import { ArrowUpRight } from "@/components/Icons";
 
 export function About() {
   return (
@@ -49,7 +50,7 @@ export function About() {
             </p>
           </div>
           <a className="text-link" href="#servizi">
-            Scegliamo da dove iniziare <span className="arrow" aria-hidden="true">↗</span>
+            Scegliamo da dove iniziare <ArrowUpRight className="arrow" />
           </a>
         </div>
       </div>

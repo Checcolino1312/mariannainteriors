@@ -16,11 +16,11 @@ Costi: Cal.com è gratuito; Stripe non ha canone e trattiene una commissione su 
 
 ## 1. Stripe (incassi)
 
-1. Vai su **stripe.com/it** → *Inizia ora* e crea l'account con la tua email.
+1. Vai su **stripe.com/it** > *Inizia ora* e crea l'account con la tua email.
 2. Completa l'attivazione: tipo di attività (libera professionista / ditta individuale), **P. IVA 04324221201**, dati personali, **IBAN** dove ricevere i pagamenti.
-3. In *Impostazioni → Branding* carica il logo e imposta il colore **#AB663C**.
-4. In *Impostazioni → Email ai clienti* attiva le **ricevute per i pagamenti riusciti**.
-5. In *Impostazioni → Notifiche* attiva l'email per i **pagamenti riusciti**: così ricevi un avviso a ogni acquisto.
+3. In *Impostazioni > Branding* carica il logo e imposta il colore **#AB663C**.
+4. In *Impostazioni > Email ai clienti* attiva le **ricevute per i pagamenti riusciti**.
+5. In *Impostazioni > Notifiche* attiva l'email per i **pagamenti riusciti**: così ricevi un avviso a ogni acquisto.
 
 > Stripe incassa e invia la ricevuta, ma **non emette la fattura elettronica italiana**: la fattura la emetti come fai oggi (gestionale / commercialista) usando i dati che il cliente inserisce al pagamento.
 
@@ -32,16 +32,16 @@ Se in futuro vorrai il pagamento online, il sito è già pronto: crei in Stripe 
 
 ## 3. Cal.com per la consulenza
 
-1. Vai su **cal.com** → *Get started* e registrati (piano gratuito). Scegli un nome utente, ad esempio `marianna-interiors`.
-2. *Impostazioni → Generale*: lingua **Italiano**, fuso orario **Europe/Rome**.
+1. Vai su **cal.com** > *Get started* e registrati (piano gratuito). Scegli un nome utente, ad esempio `marianna-interiors`.
+2. *Impostazioni > Generale*: lingua **Italiano**, fuso orario **Europe/Rome**.
 3. *Calendari*: collega **Google Calendar** (o Outlook), così gli appuntamenti finiscono nel tuo calendario e gli orari già occupati vengono bloccati.
 4. *Disponibilità*: imposta giorni e orari in cui vuoi ricevere consulenze.
 5. *App*: installa **Google Meet** (o Zoom) per il link della videocall e **Stripe** (collegalo all'account del punto 1).
-6. *Tipi di evento → Nuovo*: **Consulenza online 60 minuti**, durata **60 minuti**, slug ad esempio `consulenza-60`.
+6. *Tipi di evento > Nuovo*: **Consulenza online 60 minuti**, durata **60 minuti**, slug ad esempio `consulenza-60`.
    - **Posizione**: Google Meet.
    - **Limiti**: **preavviso minimo di almeno 4 giorni** (il materiale deve arrivarti almeno 3 giorni prima della videocall, più il tempo per la tua email di contatto), pausa tra appuntamenti (es. 15 minuti).
-   - **App → Stripe**: attiva il pagamento, prezzo **149 €**, valuta EUR.
-   - **Avanzate → Domande di prenotazione** (oltre a nome ed email, già presenti), aggiungi:
+   - **App > Stripe**: attiva il pagamento, prezzo **149 €**, valuta EUR.
+   - **Avanzate > Domande di prenotazione** (oltre a nome ed email, già presenti), aggiungi:
      - *Codice fiscale* — testo breve, obbligatorio;
      - *Indirizzo di fatturazione* — tipo "Indirizzo", obbligatorio;
      - *Partita IVA (solo aziende)* — testo breve, facoltativo;
@@ -54,7 +54,7 @@ Ogni prenotazione ti arriva via email con data, ora, dati per la fattura e rispo
 
 Dopo ogni prenotazione **scrivi tu al cliente** con le indicazioni per il materiale (da inviare almeno 3 giorni prima della videocall): il sito e la pagina "Grazie" glielo anticipano già.
 
-## 4. Link nel sito ✅
+## 4. Link nel sito (già fatto)
 
 Il link dell'evento è già inserito: **`cal.com/marianna.interiors/consulenza-60min`** (in `src/lib/site.ts`, `BOOKING.calLink`).
 Se in futuro cambi il nome utente o lo slug dell'evento su Cal.com, va aggiornato lì (oppure con la variabile `NEXT_PUBLIC_CAL_LINK` nel pannello dell'hosting).
@@ -70,7 +70,7 @@ Un pagamento da 0 € non è possibile (Stripe richiede almeno 0,50 €) e su Ca
 1. Su Cal.com **duplica l'evento** della consulenza, chiamalo "Prova" (slug `prova`), rendilo **nascosto** e metti il prezzo a **1 €**. L'evento vero resta a 149 €.
 2. Il sito si collega temporaneamente all'evento di prova (in locale o con `NEXT_PUBLIC_CAL_LINK=marianna.interiors/prova`).
 3. Prenota **dal sito** e paga 1 € con una carta vera: verifica il passaggio alla pagina "Grazie", le email con i dati per la fattura, l'appuntamento in calendario e il link Meet.
-4. Rimborsa l'euro da Stripe (*Pagamenti → il pagamento → Rimborsa*) ed elimina l'evento di prova. Stripe trattiene la sua commissione anche sui rimborsi: la prova costa circa 25-30 centesimi.
+4. Rimborsa l'euro da Stripe (*Pagamenti > il pagamento > Rimborsa*) ed elimina l'evento di prova. Stripe trattiene la sua commissione anche sui rimborsi: la prova costa circa 25-30 centesimi.
 
 ## 6. Pagamento con bonifico
 

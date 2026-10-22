@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { SERVICES, servicePath, type Service } from "@/content/services";
 import { Orient } from "./Orient";
+import { ArrowUpRight } from "@/components/Icons";
 
 export function Price({ price }: { price: Service["price"] }) {
   return (
@@ -56,9 +57,7 @@ export function Services() {
               <Price price={s.price} />
               <Link className="service-button" href={servicePath(s)}>
                 {s.cardCta}
-                <span className="arrow" aria-hidden="true">
-                  ↗
-                </span>
+                <ArrowUpRight className="arrow" />
               </Link>
             </div>
           </article>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BANK, formatIban, mailto } from "@/lib/site";
+import { ArrowUpRight } from "@/components/Icons";
 
 type Props = {
   service: string;
@@ -86,7 +87,7 @@ export function BankTransfer({ service, amount, kind, open }: Props) {
         </li>
       </ol>
       <a className="text-link" href={mailto(`Bonifico ${service} - nome cognome`, body)}>
-        Invia ricevuta e dati per la fattura <span className="arrow" aria-hidden="true">↗</span>
+        Invia ricevuta e dati per la fattura <ArrowUpRight className="arrow" />
       </a>
     </details>
   );

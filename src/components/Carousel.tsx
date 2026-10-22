@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, type KeyboardEvent } from "react";
 import type { SiteImage } from "@/content/images";
+import { ArrowLeft, ArrowRight } from "@/components/Icons";
 
 type Props = {
   slides: SiteImage[];
@@ -53,10 +54,10 @@ export function Carousel({ slides, label, className = "", sizes, eager, fit = "c
         {total > 1 && (
           <div className="carousel-controls">
             <button className="carousel-arrow" type="button" aria-label="Immagine precedente" onClick={() => go(-1)}>
-              <span aria-hidden="true">←</span>
+              <ArrowLeft className="arrow" />
             </button>
             <button className="carousel-arrow" type="button" aria-label="Immagine successiva" onClick={() => go(1)}>
-              <span aria-hidden="true">→</span>
+              <ArrowRight className="arrow" />
             </button>
           </div>
         )}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { REELS } from "@/content/images";
 import { SITE, mailto } from "@/lib/site";
+import { ArrowUpRight, Play } from "@/components/Icons";
 
 export function Cta() {
   return (
@@ -14,7 +15,7 @@ export function Cta() {
           Una scelta alla volta.
         </h2>
         <a className="button" href={mailto("La mia idea per la casa")}>
-          Raccontami la tua idea <span className="arrow" aria-hidden="true">↗</span>
+          Raccontami la tua idea <ArrowUpRight className="arrow" />
         </a>
       </div>
     </section>
@@ -28,7 +29,7 @@ export function Instagram() {
         Seguimi su IG!
       </h2>
       <a className="instagram-handle" href={SITE.instagram} target="_blank" rel="noopener noreferrer">
-        @{SITE.handle} <span aria-hidden="true">↗</span>
+        @{SITE.handle} <ArrowUpRight className="arrow" />
       </a>
       <div className="reels-grid" data-reveal-group>
         {REELS.map((reel) => (
@@ -42,9 +43,7 @@ export function Instagram() {
           >
             {/* Originali già ottimizzati: nessuna ricompressione, che le renderebbe sgranate. */}
             <Image src={reel.src} alt="" width={263} height={263} unoptimized />
-            <span className="reel-play" aria-hidden="true">
-              ▶
-            </span>
+            <Play className="reel-play" />
           </a>
         ))}
       </div>

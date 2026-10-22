@@ -135,10 +135,16 @@ address {
   color: var(--rust);
   margin-right: 16px;
 }
+/* Icone SVG (src/components/Icons.tsx): misurano 1em e prendono il colore del testo */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
 .arrow {
-  font-family: Arial, sans-serif;
   font-size: 18px;
-  line-height: 1;
 }
 .visually-hidden {
   position: absolute;
@@ -227,8 +233,7 @@ address {
     border-color 0.25s;
 }
 .service-button .arrow {
-  font-size: 22px;
-  flex-shrink: 0;
+  font-size: 20px;
 }
 .service-button:hover,
 .service-button:focus-visible {
@@ -669,7 +674,7 @@ address {
   display: grid;
   place-items: center;
   padding: 0;
-  font: 18px Arial, sans-serif;
+  font-size: 18px;
   transition: background-color 0.2s;
 }
 .carousel-arrow:hover {
@@ -1203,6 +1208,10 @@ details p {
   color: var(--rust-deep);
   margin-top: 12px;
 }
+.instagram-handle .arrow {
+  font-size: 14px;
+  margin-left: 2px;
+}
 .instagram-handle:hover {
   text-decoration: underline;
 }
@@ -1235,8 +1244,9 @@ details p {
   top: 13px;
   right: 13px;
   color: #fff;
-  font: 14px Arial, sans-serif;
-  text-shadow: 0 1px 5px #0005;
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
 }
 
 /* --- Footer -------------------------------------------------------------- */
@@ -1316,6 +1326,9 @@ details p {
   font-size: 14px;
   margin-bottom: 26px;
   color: var(--muted);
+}
+.detail-back .arrow {
+  font-size: 16px;
 }
 .detail-back:hover {
   color: var(--rust-deep);
@@ -1952,7 +1965,8 @@ details p {
   .reel-play {
     top: 8px;
     right: 8px;
-    font-size: 10px;
+    width: 12px;
+    height: 12px;
   }
   .footer {
     padding-top: 24px;

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Monogram } from "@/components/brand/Logo";
+import { ArrowUpRight } from "@/components/Icons";
 
 export default function NotFound() {
   return (
@@ -14,7 +15,7 @@ export default function NotFound() {
         </h1>
         <p>La pagina che cerchi è stata spostata o non è mai esistita.</p>
         <Link className="button hero-button" href="/">
-          Torna alla home <span className="arrow" aria-hidden="true">↗</span>
+          Torna alla home <ArrowUpRight className="arrow" />
         </Link>
       </section>
     </div>

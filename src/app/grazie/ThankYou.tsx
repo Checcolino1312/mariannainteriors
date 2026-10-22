@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { SITE, mailto } from "@/lib/site";
+import { ArrowUpRight } from "@/components/Icons";
 
 const PREPARE = [
   "Fotografie degli ambienti, scattate con luce naturale e da più punti di vista.",
@@ -66,7 +67,7 @@ export function ThankYouContent({ copy = COPY.generico }: { copy?: (typeof COPY)
         className="button hero-button"
         href={mailto(copy.subject, "Buongiorno Marianna,\n\nti invio il materiale per il servizio che ho acquistato.\n\n")}
       >
-        Invia il materiale via email <span className="arrow" aria-hidden="true">↗</span>
+        Invia il materiale via email <ArrowUpRight className="arrow" />
       </a>
     </>
   );
