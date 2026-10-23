@@ -4,9 +4,9 @@ export const SITE = {
   payoff: "Architettura e percezione",
   // Dominio di produzione: aggiornare qui se cambia (usato per canonical, sitemap, Open Graph, JSON-LD).
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mariannainteriors.it",
-  title: "Marianna Interiors | Interior design online, una direzione chiara per la tua casa",
+  title: "Marianna Interiors | Consulenze e progetti di interni",
   description:
-    "Interior design online con Marianna Mancini, interior designer. Consulenze, mappe di stile e progetti di interni per scegliere colori, materiali e arredi con una direzione chiara.",
+    "Una direzione chiara per la tua casa. Consulenze online e progettazione di interni: ti aiuto a definire i tuoi spazi, dalle idee alle scelte concrete.",
   locale: "it_IT",
   owner: {
     name: "Marianna Mancini",

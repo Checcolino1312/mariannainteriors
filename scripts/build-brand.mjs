@@ -9,7 +9,7 @@ import pngToIco from "png-to-ico";
 import { MATERIALE, ROOT, readEmbedded } from "./lib/bozza.mjs";
 
 const SCALE = 4; // il tracciamento su un'immagine ingrandita produce curve più morbide
-const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#AB663C", noce: "#402E23" };
+const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#A26238", noce: "#402E23" };
 
 /** Bounding box dei pixel opachi nelle righe [y0, y1]. */
 async function opaqueBox(input, y0, y1, min = 100, x0 = 0, x1 = Infinity) {

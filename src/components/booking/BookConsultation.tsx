@@ -27,8 +27,8 @@ export function BookConsultation({ calLink, label }: { calLink: string; label: s
           hideEventTypeDetails: false,
           layout: "month_view",
           cssVarsPerTheme: {
-            light: { "cal-brand": "#AB663C", "cal-brand-emphasis": "#8B4F2D", "cal-brand-text": "#F4E9B6" },
-            dark: { "cal-brand": "#AB663C" },
+            light: { "cal-brand": "#A26238", "cal-brand-emphasis": "#A26238", "cal-brand-text": "#F4E9B6" },
+            dark: { "cal-brand": "#A26238" },
           },
         });
         // Fine prenotazione: il reindirizzo di Cal.com è solo nei piani a pagamento,

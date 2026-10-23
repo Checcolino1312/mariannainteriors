@@ -43,6 +43,15 @@ export default function PrivacyPage() {
           . I dati della carta non transitano né vengono conservati sul sito.
         </p>
 
+        <h2>Anteprime Instagram</h2>
+        <p>
+          Le anteprime dei post Instagram sono fornite da{" "}
+          <a href="https://behold.so/privacy" target="_blank" rel="noopener noreferrer">
+            Behold.so
+          </a>{" "}
+          e vengono servite dal sito stesso: la tua navigazione non le richiede direttamente a Instagram né a Behold.
+        </p>
+
         <h2>Dati di fatturazione</h2>
         <p>
           Nome, codice fiscale, indirizzo e, per le aziende, partita IVA e codice SDI o PEC sono richiesti al momento

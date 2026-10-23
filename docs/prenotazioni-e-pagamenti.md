@@ -89,7 +89,19 @@ Cosa fai tu quando arriva un bonifico:
 
 Intestatario e causale si cambiano in `src/lib/site.ts` (`BANK`).
 
-## 7. Da confermare prima della pubblicazione
+## 7. Copertine Instagram (Behold.so)
+
+Nella sezione "Seguimi su IG!" il sito mostra le copertine dei tuoi ultimi reel **intere**, nel loro formato originale, e si aggiorna da solo (circa ogni ora). Usa **Behold.so**, lo stesso servizio del sito Ruggieri.
+
+1. Vai su **behold.so** e crea un account (il piano gratuito basta).
+2. Collega il tuo profilo Instagram **@marianna.interiors** (deve essere un account professionale: Creator o Business).
+3. Crea un nuovo feed di tipo **JSON**.
+4. Copia l'**ID del feed** (la parte finale dell'indirizzo `https://feeds.behold.so/...`) e mandamelo.
+5. Su Vercel: *Settings > Environment Variables* aggiungi `BEHOLD_FEED_ID` con quell'ID e rifai il deploy.
+
+Finché il feed non è collegato, il sito mostra le 6 miniature attuali, intere.
+
+## 8. Da confermare prima della pubblicazione
 
 - **Condizioni di vendita** (`/condizioni-di-vendita`): annullamento entro 48 ore, regime forfettario e consegna della mappa in 2 settimane lavorative sono confermati. Restano da far verificare a un legale il consenso all'avvio anticipato del servizio (diritto di recesso) e la frase sulla piattaforma europea ODR.
 - **Fatture oltre 77,47 €**: va applicata la marca da bollo da 2 €. Sul sito e nelle condizioni di vendita i prezzi sono **finali, bollo incluso** (149 € e 399 €): in fattura il commercialista indicherà la forma corretta (es. 147 € + 2 € di bollo, oppure 149 € con bollo a tuo carico). Il cliente paga comunque 149 €.

@@ -25,10 +25,12 @@ export function Services() {
             <em>la tua idea?</em>
           </h2>
         </div>
-        <p>
+        <p className="heading-aside">
           Quattro modi di lavorare insieme.
           <br />
-          Scegli il supporto di cui hai bisogno, nel momento in cui ti serve.
+          Scegli il supporto di cui hai bisogno,
+          <br />
+          nel momento in cui ti serve.
         </p>
       </div>
       <div className="services" data-reveal-group>
