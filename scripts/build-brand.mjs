@@ -54,29 +54,30 @@ async function trace(input, frame, part, smooth = 0.5) {
 }
 
 // --- Monogramma "im"
-// Sorgente: "logo def.jpg", l'unico con bordi antialiasati (logo1/logo2.png sono scalettati).
-// Il monogramma color crema si separa nettamente dallo sfondo materico per luminanza (sfondo <= 185, segno >= 210).
-const logoDef = path.join(MATERIALE, "logo def.jpg");
+// Sorgente: "logo/marianna interiors sfondo beige copia.png" (versione 2026-10-29, asta della "i"
+// leggermente più spessa). È l'unico file antialiasato: il segno terracotta (luminanza ~110) si
+// separa nettamente dal fondo beige (~230). Il punto della "i" sta nelle righe 125-167, il resto 183-390.
+const monoSrc = path.join(MATERIALE, "logo", "marianna interiors sfondo beige copia.png");
 const monoPng = await (async () => {
-  const { data, info } = await sharp(logoDef).raw().toBuffer({ resolveWithObject: true });
+  const { data, info } = await sharp(monoSrc).removeAlpha().raw().toBuffer({ resolveWithObject: true });
   const rgba = Buffer.alloc(info.width * info.height * 4);
   for (let i = 0, j = 0; i < data.length; i += 3, j += 4) {
     const l = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-    rgba[j + 3] = Math.max(0, Math.min(255, Math.round(((l - 192) / (216 - 192)) * 255)));
+    rgba[j + 3] = Math.max(0, Math.min(255, Math.round(((225 - l) / (225 - 125)) * 255)));
   }
   return sharp(rgba, { raw: { width: info.width, height: info.height, channels: 4 } }).png().toBuffer();
 })();
 const pad = 6;
-const mono = await opaqueBox(monoPng, 545, 840, 200);
+const mono = await opaqueBox(monoPng, 115, 400, 200);
 const monoFrame = { left: mono.left - pad, top: mono.top - pad, width: mono.width + pad * 2, height: mono.height + pad * 2 };
 // Il punto della "i" è un cerchio: lo ricostruisco geometricamente dal suo ingombro.
-const dotBox = await opaqueBox(monoPng, 545, 608, 128, mono.left, mono.left + 120);
+const dotBox = await opaqueBox(monoPng, 115, 175, 128, mono.left, mono.left + 140);
 const r = (dotBox.width + dotBox.height) / 4;
 const cx = dotBox.left - monoFrame.left + dotBox.width / 2;
 const cy = dotBox.top - monoFrame.top + dotBox.height / 2;
 const f = (n) => Math.round(n * 100) / 100;
 const monoDot = `M ${f(cx - r)} ${f(cy)} A ${f(r)} ${f(r)} 0 1 0 ${f(cx + r)} ${f(cy)} A ${f(r)} ${f(r)} 0 1 0 ${f(cx - r)} ${f(cy)} Z`;
-const monoBody = await trace(monoPng, monoFrame, [609, 840], 0.35);
+const monoBody = await trace(monoPng, monoFrame, [176, 400], 0.35);
 
 // --- Wordmark + payoff (immagine ad alta risoluzione incorporata nella bozza)
 const wordmarkPng = readEmbedded()[4].buffer;
@@ -157,8 +158,8 @@ console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
     <g transform="translate(${((W - 470) / 2).toFixed(2)} ${(y0 + monoH + 34).toFixed(2)}) scale(${ws.toFixed(4)})">
       <path d="${wordName}" fill="${COLORS.beige}" fill-rule="evenodd"/><path d="${wordPayoff}" fill="${COLORS.burro}" fill-rule="evenodd"/>
     </g></svg>`;
-  await sharp(path.join(MATERIALE, "sfondo.png"))
-    .resize(W, H, { fit: "cover", position: "top" })
+  await sharp(path.join(MATERIALE, "logo", "solo sfondo.jpg"))
+    .resize(W, H, { fit: "cover", position: "centre" })
     .composite([{ input: Buffer.from(overlay) }])
     .jpeg({ quality: 86, mozjpeg: true })
     .toFile(path.join(appDir, "opengraph-image.jpg"));

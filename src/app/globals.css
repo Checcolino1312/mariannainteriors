@@ -6,6 +6,8 @@
    ========================================================================= */
 
 :root {
+  /* Inquadratura dello sfondo materico, identica per intro e navbar */
+  --materico-pos: 50% 45%;
   /* Velatura dello sfondo materico (intro e navbar) */
   --materico-veil:
     linear-gradient(to bottom, rgba(64, 46, 35, 0.28), rgba(64, 46, 35, 0) 22%),
@@ -259,11 +261,11 @@ address {
   flex-shrink: 0;
 }
 /* Il wordmark è centrato sulla "m", non sull'intero monogramma (che include il punto della "i"):
-   il centro della "m" è più in basso del centro dell'SVG del 10,95% della sua altezza. */
+   il centro della "m" è più in basso del centro dell'SVG del 10,52% della sua altezza. */
 .lockup-wordmark {
   width: 180px;
   height: auto;
-  transform: translateY(calc(var(--mono-h) * 0.1095));
+  transform: translateY(calc(var(--mono-h) * 0.1052));
 }
 .lockup--light {
   color: var(--paper);
@@ -309,9 +311,9 @@ address {
   height: 100lvh;
   z-index: -1;
   background-color: var(--rust);
-  background-image: var(--materico-veil), url("/images/sfondo-materico.webp");
+  background-image: var(--materico-veil), url("/images/sfondo-intonaco.webp");
   background-size: auto, auto, cover;
-  background-position: 0 0, 0 0, 62% 35%;
+  background-position: 0 0, 0 0, var(--materico-pos);
   background-repeat: no-repeat;
   clip-path: inset(0 0 calc(100% - var(--header-h)) 0);
   pointer-events: none;
@@ -465,7 +467,7 @@ address {
 }
 .intro-bg img {
   object-fit: cover;
-  object-position: 62% 35%;
+  object-position: var(--materico-pos);
 }
 .intro-bg::after {
   content: "";

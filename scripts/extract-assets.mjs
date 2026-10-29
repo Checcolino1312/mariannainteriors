@@ -56,7 +56,7 @@ for (const job of jobs) {
 
 // Sfondi forniti dalla cliente.
 const backgrounds = [
-  { src: "sfondo.png", name: "sfondo-materico", width: 941 },
+  { src: "logo/solo sfondo.jpg", name: "sfondo-intonaco", width: 936 },
 ];
 for (const bg of backgrounds) {
   const file = path.join(OUT, `${bg.name}.webp`);
