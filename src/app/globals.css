@@ -8,6 +8,13 @@
 :root {
   /* Inquadratura dello sfondo materico, identica per intro e navbar */
   --materico-pos: 50% 45%;
+  /* Sfocatura dello sfondo mentre si compone il logo (resta finché si è sull'intro) */
+  --intro-blur: 9px;
+  /* lenta e graduale: parte poco prima del tracciato e finisce mentre compaiono wordmark e payoff */
+  --intro-blur-delay: 0.3s;
+  --intro-blur-duration: 3.2s;
+  /* Lo strato di sfondo sborda oltre la finestra: la sfocatura non crea aloni ai bordi */
+  --materico-bleed: 32px;
   /* Velatura dello sfondo materico (intro e navbar) */
   --materico-veil:
     linear-gradient(to bottom, rgba(64, 46, 35, 0.28), rgba(64, 46, 35, 0) 22%),
@@ -304,20 +311,25 @@ address {
 .header::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100lvh;
+  top: calc(var(--materico-bleed) * -1);
+  left: calc(var(--materico-bleed) * -1);
+  width: calc(100% + var(--materico-bleed) * 2);
+  height: calc(100vh + var(--materico-bleed) * 2);
+  height: calc(100lvh + var(--materico-bleed) * 2);
   z-index: -1;
   background-color: var(--rust);
   background-image: var(--materico-veil), url("/images/sfondo-intonaco.webp");
   background-size: auto, auto, cover;
   background-position: 0 0, 0 0, var(--materico-pos);
   background-repeat: no-repeat;
-  clip-path: inset(0 0 calc(100% - var(--header-h)) 0);
+  clip-path: inset(
+    var(--materico-bleed) var(--materico-bleed) calc(100% - var(--materico-bleed) - var(--header-h))
+      var(--materico-bleed)
+  );
   pointer-events: none;
-  transition: opacity 0.45s var(--ease-out);
+  transition:
+    opacity 0.45s var(--ease-out),
+    filter 0.6s var(--ease-out);
 }
 .header[data-over-intro="true"] {
   box-shadow: none;
@@ -326,7 +338,9 @@ address {
    contenuto dell'intro scorre sotto la navbar. Solo durante l'apparizione iniziale dell'intro
    (dissolvenza + zoom, 2 s) la navbar è trasparente, poi lo strato compare senza stacco. */
 .header[data-over-intro="true"]::before {
-  animation: header-materico-in 0.5s 1.6s ease both;
+  filter: blur(var(--intro-blur));
+  /* compare solo a sfocatura completata, così coincide sempre con lo sfondo dell'intro */
+  animation: header-materico-in 0.4s calc(var(--intro-blur-delay) + var(--intro-blur-duration)) ease both;
 }
 @keyframes header-materico-in {
   from {
@@ -457,13 +471,17 @@ address {
 /* Sfondo agganciato alla finestra, come quello della navbar: restano sempre allineati */
 .intro-bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100lvh;
+  top: calc(var(--materico-bleed) * -1);
+  left: calc(var(--materico-bleed) * -1);
+  width: calc(100% + var(--materico-bleed) * 2);
+  height: calc(100vh + var(--materico-bleed) * 2);
+  height: calc(100lvh + var(--materico-bleed) * 2);
   z-index: -1;
-  animation: intro-bg 2s var(--ease-out) both;
+  /* dissolvenza con zoom; poco prima del tracciato del monogramma (0,5 s) lo sfondo inizia a
+     sfocarsi in diretta, lentamente, fino alla sfocatura piena a logo quasi composto (3,5 s) */
+  animation:
+    intro-bg 2s var(--ease-out) both,
+    intro-blur var(--intro-blur-duration) var(--intro-blur-delay) cubic-bezier(0.37, 0, 0.35, 1) both;
 }
 .intro-bg img {
   object-fit: cover;
@@ -564,6 +582,14 @@ address {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+@keyframes intro-blur {
+  from {
+    filter: blur(0);
+  }
+  to {
+    filter: blur(var(--intro-blur));
   }
 }
 @keyframes mono-draw {
@@ -2112,6 +2138,9 @@ details p {
   .intro-monogram .monogram-body {
     fill-opacity: 1;
     stroke-width: 0;
+  }
+  .intro-bg {
+    filter: blur(var(--intro-blur));
   }
   .intro-monogram .monogram-dot,
   .intro-wordmark .wordmark-name,
