@@ -1109,11 +1109,10 @@ address {
   flex-direction: column;
   min-width: 0;
 }
+/* Foto di Marianna: grande, subito sotto il titolo, allineata a sinistra con il titolo */
 .about-portrait {
-  width: 300px;
-  max-width: 85%;
-  margin: auto auto -65px;
-  padding-top: 28px;
+  width: min(100%, 440px);
+  margin-top: 36px;
 }
 .about-portrait img {
   width: 100%;
@@ -1844,9 +1843,6 @@ details p {
   .about {
     gap: 40px;
   }
-  .about-portrait {
-    width: 250px;
-  }
   .gallery-image {
     height: 400px;
   }
@@ -2010,9 +2006,9 @@ details p {
     gap: 32px;
   }
   .about-portrait {
-    width: 240px;
-    max-width: 80%;
-    margin: 28px auto 0;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 28px;
   }
   .about-copy {
     padding-top: 0;

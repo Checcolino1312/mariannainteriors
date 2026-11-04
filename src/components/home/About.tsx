@@ -18,7 +18,7 @@ export function About() {
             <em>sono Marianna.</em>
           </h2>
           <div className="about-portrait" data-reveal="image">
-            <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="300px" />
+            <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="(max-width: 620px) 90vw, 440px" />
           </div>
         </div>
         <div className="about-copy" data-reveal-group>

@@ -56,7 +56,7 @@ for (const job of jobs) {
 // cache, né di Next.js né dei browser, mostra la versione precedente).
 const backgrounds = [
   { src: "solo sfondo nuovo.jpg", name: "sfondo-intonaco-caldo", width: 936 },
-  { src: "immagine nuova.jpg", name: "marianna-mancini-ritratto", width: 760, quality: 84 },
+  { src: "immagine nuova.jpg", name: "marianna-mancini-ritratto", width: 1082, quality: 84 },
 ];
 for (const bg of backgrounds) {
   const file = path.join(OUT, `${bg.name}.webp`);

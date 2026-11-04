@@ -53,6 +53,6 @@ export const REELS = [
 export const PORTRAIT: SiteImage = {
   src: "/images/marianna-mancini-ritratto.webp",
   alt: "Marianna Mancini, interior designer, seduta su una poltrona in bouclé terracotta",
-  width: 760,
-  height: 1028,
+  width: 1082,
+  height: 1463,
 };
