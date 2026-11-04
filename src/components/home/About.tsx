@@ -8,7 +8,7 @@ export function About() {
   return (
     <section id="chi-sono" className="section wrap" aria-labelledby="chi-sono-title">
       <div className="about">
-        <div className="about-intro">
+        <div className="about-head">
           <p className="eyebrow" data-reveal>
             03 / Il mio approccio
           </p>
@@ -17,9 +17,9 @@ export function About() {
             <br />
             <em>sono Marianna.</em>
           </h2>
-          <div className="about-portrait" data-reveal="image">
-            <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="(max-width: 620px) 90vw, 440px" />
-          </div>
+        </div>
+        <div className="about-portrait" data-reveal="image">
+          <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="(max-width: 620px) 90vw, 440px" />
         </div>
         <div className="about-copy" data-reveal-group>
           <h3>Ti aiuto a dare una direzione alle idee e forma ai tuoi spazi.</h3>

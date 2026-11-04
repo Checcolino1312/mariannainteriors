@@ -56,6 +56,8 @@ for (const job of jobs) {
 // cache, né di Next.js né dei browser, mostra la versione precedente).
 const backgrounds = [
   { src: "solo sfondo nuovo.jpg", name: "sfondo-intonaco-caldo", width: 936 },
+  // versione orizzontale per schermi larghi (computer, tablet in orizzontale)
+  { src: "sfondo orizzontale.jpg", name: "sfondo-intonaco-orizzontale", width: 1601 },
   { src: "immagine nuova.jpg", name: "marianna-mancini-ritratto", width: 1082, quality: 84 },
 ];
 for (const bg of backgrounds) {

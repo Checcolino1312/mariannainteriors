@@ -9,7 +9,7 @@ import pngToIco from "png-to-ico";
 import { MATERIALE, ROOT, readEmbedded } from "./lib/bozza.mjs";
 
 const SCALE = 4; // il tracciamento su un'immagine ingrandita produce curve più morbide
-const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#A26238", noce: "#402E23", payoff: "#7F4525" };
+const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#A26238", noce: "#402E23", payoff: "#7F4525", crema: "#EAE6DC" };
 
 /** Bounding box dei pixel opachi nelle righe [y0, y1]. */
 async function opaqueBox(input, y0, y1, min = 100, x0 = 0, x1 = Infinity) {
@@ -134,11 +134,11 @@ const ico = await pngToIco(await Promise.all([16, 32, 48].map((s) => render(favS
 writeFileSync(path.join(appDir, "favicon.ico"), ico);
 console.log("ok src/app/favicon.ico");
 
-const touchSvg = monogramSquare(COLORS.beige, COLORS.terracotta, { padding: 0.2 });
+const touchSvg = monogramSquare(COLORS.crema, COLORS.terracotta, { padding: 0.2 });
 writeFileSync(path.join(appDir, "apple-icon.png"), await render(touchSvg, 180));
 writeFileSync(path.join(pub, "icon-192.png"), await render(touchSvg, 192));
 writeFileSync(path.join(pub, "icon-512.png"), await render(touchSvg, 512));
-const maskable = monogramSquare(COLORS.beige, COLORS.terracotta, { padding: 0.28 });
+const maskable = monogramSquare(COLORS.crema, COLORS.terracotta, { padding: 0.28 });
 writeFileSync(path.join(pub, "icon-maskable-512.png"), await render(maskable, 512));
 console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
 
@@ -154,11 +154,11 @@ console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
   const y0 = (H - total) / 2;
   const overlay = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <rect width="${W}" height="${H}" fill="${COLORS.noce}" fill-opacity=".18"/>
-    <g transform="translate(${((W - monoW) / 2).toFixed(2)} ${y0.toFixed(2)}) scale(${ms.toFixed(4)})" fill="${COLORS.beige}"><path d="${monoDot}"/><path d="${monoBody}"/></g>
+    <g transform="translate(${((W - monoW) / 2).toFixed(2)} ${y0.toFixed(2)}) scale(${ms.toFixed(4)})" fill="${COLORS.crema}" fill-opacity="0.8"><path d="${monoDot}"/><path d="${monoBody}"/></g>
     <g transform="translate(${((W - 470) / 2).toFixed(2)} ${(y0 + monoH + 34).toFixed(2)}) scale(${ws.toFixed(4)})">
-      <path d="${wordName}" fill="${COLORS.beige}" fill-rule="evenodd"/><path d="${wordPayoff}" fill="${COLORS.payoff}" fill-rule="evenodd"/>
+      <path d="${wordName}" fill="${COLORS.crema}" fill-opacity="0.8" fill-rule="evenodd"/><path d="${wordPayoff}" fill="${COLORS.payoff}" fill-rule="evenodd"/>
     </g></svg>`;
-  await sharp(path.join(MATERIALE, "solo sfondo nuovo.jpg"))
+  await sharp(path.join(MATERIALE, "sfondo orizzontale.jpg"))
     .resize(W, H, { fit: "cover", position: "centre" })
     .composite([{ input: Buffer.from(overlay) }])
     .jpeg({ quality: 86, mozjpeg: true })

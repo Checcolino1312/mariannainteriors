@@ -25,6 +25,8 @@
   --rust-deep: #a26238; /* Stesso terracotta: alias mantenuto per i testi */
   /* Payoff "ARCHITETTURA E PERCEZIONE" del logo: terracotta scuro del file del logo (eccezione voluta) */
   --logo-payoff: #7f4525;
+  /* Crema del logo (monogramma e "marianna.interiors") dal file del logo di Marianna */
+  --logo-cream: rgba(234, 230, 220, 0.8); /* #eae6dc all'80% */
   --walnut: #402e23; /* Noce — testi e fondi scuri */
   --ink: #402e23;
   --muted: #5f4f43;
@@ -277,10 +279,10 @@ address {
   transform: translateY(calc(var(--mono-h) * 0.1052));
 }
 .lockup--light {
-  color: var(--paper);
+  color: var(--logo-cream);
 }
 .lockup--light .wordmark-name {
-  fill: var(--paper);
+  fill: var(--logo-cream);
 }
 .lockup--light .wordmark-payoff {
   fill: var(--logo-payoff);
@@ -330,6 +332,12 @@ address {
   );
   pointer-events: none;
   transition: opacity 0.45s var(--ease-out);
+}
+/* Su schermi orizzontali lo sfondo è la versione orizzontale, come nell'intro */
+@media (orientation: landscape) {
+  .header::before {
+    background-image: var(--materico-veil), url("/images/sfondo-intonaco-orizzontale.webp");
+  }
 }
 .header[data-over-intro="true"] {
   box-shadow: none;
@@ -482,6 +490,13 @@ address {
     intro-bg 2s var(--ease-out) both,
     intro-blur var(--intro-blur-duration) var(--intro-blur-delay) cubic-bezier(0.37, 0, 0.35, 1) both;
 }
+.intro-bg picture,
+.intro-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
 .intro-bg img {
   object-fit: cover;
   object-position: var(--materico-pos);
@@ -506,9 +521,9 @@ address {
   overflow: visible;
 }
 .intro-monogram .monogram-body {
-  fill: var(--paper);
+  fill: var(--logo-cream);
   fill-opacity: 0;
-  stroke: var(--paper);
+  stroke: var(--logo-cream);
   stroke-width: 1.4;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -517,7 +532,7 @@ address {
     mono-fill 0.8s 1.5s ease forwards;
 }
 .intro-monogram .monogram-dot {
-  fill: var(--paper);
+  fill: var(--logo-cream);
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
@@ -532,7 +547,7 @@ address {
   transform-box: fill-box;
 }
 .intro-wordmark .wordmark-name {
-  fill: var(--paper);
+  fill: var(--logo-cream);
   opacity: 0;
   animation: rise 1s 2.4s var(--ease-out) forwards;
 }
@@ -1101,29 +1116,35 @@ address {
 .about {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 90px;
-  align-items: stretch;
+  grid-template-areas:
+    "head ."
+    "photo copy";
+  column-gap: 90px;
+  row-gap: 36px;
+  align-items: start;
 }
-.about-intro {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+.about-head {
+  grid-area: head;
 }
-/* Foto di Marianna: grande, subito sotto il titolo, allineata a sinistra con il titolo */
+/* Foto di Marianna: grande, sotto il titolo; il suo bordo superiore è allineato
+   all'inizio del testo a destra */
 .about-portrait {
+  grid-area: photo;
   width: min(100%, 440px);
-  margin-top: 36px;
 }
 .about-portrait img {
   width: 100%;
   height: auto;
 }
 .about-copy {
-  padding-top: 42px;
+  grid-area: copy;
+  min-width: 0;
 }
 .about-copy h3 {
   font-size: 27px;
   line-height: 1.35;
+  /* compensa metà interlinea: le lettere partono a filo con il bordo della foto */
+  margin-top: -0.175em;
 }
 .about-copy p {
   margin-top: 20px;
@@ -1841,7 +1862,7 @@ details p {
     padding-top: 26px;
   }
   .about {
-    gap: 40px;
+    column-gap: 40px;
   }
   .gallery-image {
     height: 400px;
@@ -2003,15 +2024,15 @@ details p {
   }
   .about {
     grid-template-columns: 1fr;
-    gap: 32px;
+    grid-template-areas:
+      "head"
+      "photo"
+      "copy";
+    row-gap: 28px;
   }
   .about-portrait {
     width: 100%;
     max-width: 420px;
-    margin-top: 28px;
-  }
-  .about-copy {
-    padding-top: 0;
   }
   .about-copy h3 {
     font-size: 23.5px;
