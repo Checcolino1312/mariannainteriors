@@ -11,7 +11,7 @@ export function IntroHero() {
     <section id="intro" className="intro" aria-label="Marianna Interiors — Architettura e percezione">
       <div className="intro-bg" aria-hidden="true">
         <Image
-          src="/images/sfondo-intonaco.webp"
+          src="/images/sfondo-intonaco-caldo.webp"
           alt=""
           fill
           preload

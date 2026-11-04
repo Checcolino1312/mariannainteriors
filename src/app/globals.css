@@ -23,6 +23,8 @@
   --butter: #f4e9b6; /* Burro — solo su noce o terracotta */
   --rust: #a26238; /* Terracotta — unico colore terracotta, per grafica e testi */
   --rust-deep: #a26238; /* Stesso terracotta: alias mantenuto per i testi */
+  /* Payoff "ARCHITETTURA E PERCEZIONE" del logo: terracotta scuro del file del logo (eccezione voluta) */
+  --logo-payoff: #7f4525;
   --walnut: #402e23; /* Noce — testi e fondi scuri */
   --ink: #402e23;
   --muted: #5f4f43;
@@ -281,7 +283,7 @@ address {
   fill: var(--paper);
 }
 .lockup--light .wordmark-payoff {
-  fill: var(--butter);
+  fill: var(--logo-payoff);
 }
 .lockup--dark {
   color: var(--rust);
@@ -290,7 +292,7 @@ address {
   fill: var(--walnut);
 }
 .lockup--dark .wordmark-payoff {
-  fill: var(--rust-deep);
+  fill: var(--logo-payoff);
 }
 
 /* --- Header fisso -------------------------------------------------------- */
@@ -318,7 +320,7 @@ address {
   height: calc(100lvh + var(--materico-bleed) * 2);
   z-index: -1;
   background-color: var(--rust);
-  background-image: var(--materico-veil), url("/images/sfondo-intonaco.webp");
+  background-image: var(--materico-veil), url("/images/sfondo-intonaco-caldo.webp");
   background-size: auto, auto, cover;
   background-position: 0 0, 0 0, var(--materico-pos);
   background-repeat: no-repeat;
@@ -535,7 +537,7 @@ address {
   animation: rise 1s 2.4s var(--ease-out) forwards;
 }
 .intro-wordmark .wordmark-payoff {
-  fill: var(--rust-deep);
+  fill: var(--logo-payoff);
   opacity: 0;
   animation: rise 1s 2.9s var(--ease-out) forwards;
 }
@@ -1108,7 +1110,7 @@ address {
   min-width: 0;
 }
 .about-portrait {
-  width: 240px;
+  width: 300px;
   max-width: 85%;
   margin: auto auto -65px;
   padding-top: 28px;
@@ -1843,7 +1845,7 @@ details p {
     gap: 40px;
   }
   .about-portrait {
-    width: 205px;
+    width: 250px;
   }
   .gallery-image {
     height: 400px;
@@ -2008,8 +2010,8 @@ details p {
     gap: 32px;
   }
   .about-portrait {
-    width: 180px;
-    max-width: 75%;
+    width: 240px;
+    max-width: 80%;
     margin: 28px auto 0;
   }
   .about-copy {

@@ -18,8 +18,6 @@ const jobs = [
     width: 420,
     flatten: "#ffffff",
   })),
-  // Ritaglio equivalente al posizionamento CSS della bozza (width 250.58%, left -3.71%, top -47.70%).
-  { i: 17, name: "marianna-mancini", extract: { left: 16, top: 436, width: 431, height: 914 }, alpha: true },
   { i: 18, name: "onda-instagram", width: 2048, alpha: true },
 ];
 
@@ -54,12 +52,17 @@ for (const job of jobs) {
   console.log("ok", path.relative(ROOT, file));
 }
 
-// Sfondi forniti dalla cliente.
+// Foto e sfondi forniti dalla cliente (il nome cambia a ogni nuova versione, così nessuna
+// cache, né di Next.js né dei browser, mostra la versione precedente).
 const backgrounds = [
-  { src: "logo/solo sfondo.jpg", name: "sfondo-intonaco", width: 936 },
+  { src: "solo sfondo nuovo.jpg", name: "sfondo-intonaco-caldo", width: 936 },
+  { src: "immagine nuova.jpg", name: "marianna-mancini-ritratto", width: 760, quality: 84 },
 ];
 for (const bg of backgrounds) {
   const file = path.join(OUT, `${bg.name}.webp`);
-  await sharp(path.join(MATERIALE, bg.src)).resize({ width: bg.width }).webp({ quality: 80, effort: 6 }).toFile(file);
+  await sharp(path.join(MATERIALE, bg.src))
+    .resize({ width: bg.width })
+    .webp({ quality: bg.quality ?? 80, effort: 6 })
+    .toFile(file);
   console.log("ok", path.relative(ROOT, file));
 }

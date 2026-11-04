@@ -51,8 +51,8 @@ export const REELS = [
 }));
 
 export const PORTRAIT: SiteImage = {
-  src: "/images/marianna-mancini.webp",
-  alt: "Marianna Mancini, interior designer",
-  width: 431,
-  height: 914,
+  src: "/images/marianna-mancini-ritratto.webp",
+  alt: "Marianna Mancini, interior designer, seduta su una poltrona in bouclé terracotta",
+  width: 760,
+  height: 1028,
 };

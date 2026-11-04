@@ -9,7 +9,7 @@ import pngToIco from "png-to-ico";
 import { MATERIALE, ROOT, readEmbedded } from "./lib/bozza.mjs";
 
 const SCALE = 4; // il tracciamento su un'immagine ingrandita produce curve più morbide
-const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#A26238", noce: "#402E23" };
+const COLORS = { burro: "#F4E9B6", beige: "#EEE9E2", terracotta: "#A26238", noce: "#402E23", payoff: "#7F4525" };
 
 /** Bounding box dei pixel opachi nelle righe [y0, y1]. */
 async function opaqueBox(input, y0, y1, min = 100, x0 = 0, x1 = Infinity) {
@@ -156,9 +156,9 @@ console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
     <rect width="${W}" height="${H}" fill="${COLORS.noce}" fill-opacity=".18"/>
     <g transform="translate(${((W - monoW) / 2).toFixed(2)} ${y0.toFixed(2)}) scale(${ms.toFixed(4)})" fill="${COLORS.beige}"><path d="${monoDot}"/><path d="${monoBody}"/></g>
     <g transform="translate(${((W - 470) / 2).toFixed(2)} ${(y0 + monoH + 34).toFixed(2)}) scale(${ws.toFixed(4)})">
-      <path d="${wordName}" fill="${COLORS.beige}" fill-rule="evenodd"/><path d="${wordPayoff}" fill="${COLORS.burro}" fill-rule="evenodd"/>
+      <path d="${wordName}" fill="${COLORS.beige}" fill-rule="evenodd"/><path d="${wordPayoff}" fill="${COLORS.payoff}" fill-rule="evenodd"/>
     </g></svg>`;
-  await sharp(path.join(MATERIALE, "logo", "solo sfondo.jpg"))
+  await sharp(path.join(MATERIALE, "solo sfondo nuovo.jpg"))
     .resize(W, H, { fit: "cover", position: "centre" })
     .composite([{ input: Buffer.from(overlay) }])
     .jpeg({ quality: 86, mozjpeg: true })
