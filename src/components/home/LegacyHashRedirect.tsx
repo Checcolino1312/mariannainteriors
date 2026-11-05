@@ -2,14 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LEGACY_HASHES } from "@/content/services";
 
 /** I link condivisi della bozza (/#servizio/mappa) portano alle nuove pagine dei servizi. */
-export function LegacyHashRedirect() {
+export function LegacyHashRedirect({ hashes }: { hashes: Record<string, string> }) {
   const router = useRouter();
   useEffect(() => {
-    const target = LEGACY_HASHES[window.location.hash];
+    const target = hashes[window.location.hash];
     if (target) router.replace(target);
-  }, [router]);
+  }, [router, hashes]);
   return null;
 }

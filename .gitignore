@@ -42,3 +42,7 @@ next-env.d.ts
 
 # materiale sorgente della cliente (bozza HTML, loghi, sfondi): resta solo in locale
 /materialesito/
+
+# Sanity: il file di esempio va nel repository, i backup no
+!.env.local.example
+backup-sanity*.tar.gz

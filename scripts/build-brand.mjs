@@ -162,6 +162,6 @@ console.log("ok apple-icon.png, icon-192/512.png, icon-maskable-512.png");
     .resize(W, H, { fit: "cover", position: "centre" })
     .composite([{ input: Buffer.from(overlay) }])
     .jpeg({ quality: 86, mozjpeg: true })
-    .toFile(path.join(appDir, "opengraph-image.jpg"));
-  console.log("ok src/app/opengraph-image.jpg");
+    .toFile(path.join(ROOT, "public", "opengraph-image.jpg"));
+  console.log("ok public/opengraph-image.jpg");
 }

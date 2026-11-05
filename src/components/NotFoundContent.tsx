@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Monogram } from "@/components/brand/Logo";
 import { ArrowUpRight } from "@/components/Icons";
 
-export default function NotFound() {
+export function NotFoundContent() {
   return (
     <div className="page-offset">
       <section className="wrap not-found" data-reveal-group>

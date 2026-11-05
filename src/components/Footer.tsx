@@ -1,33 +1,33 @@
 import Link from "next/link";
-import { SITE } from "@/lib/site";
+import type { Settings } from "@/content/types";
 import { Lockup } from "./brand/Logo";
 
-export function Footer() {
+export function Footer({ settings: s }: { settings: Settings }) {
   return (
     <footer id="contatti" className="footer">
       <div className="footer-inner">
         <div className="footer-main" data-reveal>
-          <Link className="footer-logo" href="/" aria-label="Marianna Interiors, torna alla home">
+          <Link className="footer-logo" href="/" aria-label={`${s.name}, torna alla home`}>
             <Lockup tone="dark" />
           </Link>
           <address className="footer-contacts">
             <p className="footer-label">Contatti</p>
             <p>
-              {SITE.owner.name} · Interior Designer
+              {s.ownerName} · {s.ownerRole}
               <br />
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+              <a href={`mailto:${s.email}`}>{s.email}</a>
               <br />
-              <a href={SITE.instagram} target="_blank" rel="noopener noreferrer">
-                Instagram @{SITE.handle}
+              <a href={s.instagram} target="_blank" rel="noopener noreferrer">
+                Instagram @{s.handle}
               </a>
               <br />
-              P. IVA {SITE.vat}
+              P. IVA {s.vat}
             </p>
           </address>
         </div>
         <div className="footer-copyright">
           <span>
-            © {SITE.copyrightYear} {SITE.handle}
+            © {s.copyrightYear} {s.handle}
           </span>
           <Link href="/condizioni-di-vendita">Condizioni di vendita</Link>
           <Link href="/privacy">Privacy</Link>

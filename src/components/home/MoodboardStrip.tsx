@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { MOODBOARDS } from "@/content/images";
+import type { SiteImage } from "@/content/types";
 
 /** Nastro di moodboard in scorrimento continuo (si ferma al passaggio del mouse). */
-export function MoodboardStrip() {
+export function MoodboardStrip({ images }: { images: SiteImage[] }) {
   const group = (copy: boolean) => (
     <div className="moodboard-group" aria-hidden={copy || undefined}>
-      {MOODBOARDS.map((img) => (
-        <figure className="moodboard-tile" key={img.src}>
+      {images.map((img, i) => (
+        <figure className="moodboard-tile" key={`${img.src}-${i}`}>
           <Image src={img.src} alt={copy ? "" : img.alt} width={img.width} height={img.height} sizes="108px" />
         </figure>
       ))}

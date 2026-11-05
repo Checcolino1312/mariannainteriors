@@ -1,9 +1,6 @@
-export type SiteImage = {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-};
+import type { SiteImage } from "./types";
+
+export type { SiteImage };
 
 export const PROJECT_IMAGES = {
   living: {
@@ -47,7 +44,7 @@ export const REELS = [
   "Come scegliere i colori",
 ].map((title, i) => ({
   title,
-  src: `/images/reel/reel-${String(i + 1).padStart(2, "0")}.jpg`,
+  image: { src: `/images/reel/reel-${String(i + 1).padStart(2, "0")}.jpg`, alt: "", width: 263, height: 263 },
 }));
 
 export const PORTRAIT: SiteImage = {

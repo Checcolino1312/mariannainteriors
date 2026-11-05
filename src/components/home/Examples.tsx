@@ -3,34 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, type KeyboardEvent } from "react";
-import { HERO_SLIDES, PROJECT_IMAGES } from "@/content/images";
+import type { Home } from "@/content/types";
 import { Carousel } from "../Carousel";
 import { ArrowUpRight } from "@/components/Icons";
+import { Lines, Paragraphs } from "@/components/Lines";
 
-const TABS = [
-  { id: "spaces", label: "I progetti" },
-  { id: "style", label: "La mappa di stile" },
-] as const;
+const TAB_IDS = ["spaces", "style"] as const;
 
-const FIGURES = [
-  {
-    image: PROJECT_IMAGES.living,
-    alt: "Esempio illustrativo AI di un living con libreria e palette naturale",
-    eyebrow: "01 / Living",
-    title: "Equilibrio naturale",
-    text: "Volumi semplici, texture morbide, un accento di colore.",
-  },
-  {
-    image: PROJECT_IMAGES.bagno,
-    alt: "Esempio illustrativo AI di un bagno con materiali caldi e luce integrata",
-    eyebrow: "02 / Bagno",
-    title: "Materia e luce",
-    text: "Toni continui, dettagli coordinati, una luce che accompagna.",
-  },
-];
-
-export function Examples({ mappaHref }: { mappaHref: string }) {
-  const [active, setActive] = useState<(typeof TABS)[number]["id"]>("spaces");
+export function Examples({ content, mappaHref }: { content: Home["examples"]; mappaHref: string }) {
+  const tabs = [
+    { id: TAB_IDS[0], label: content.tabProjects },
+    { id: TAB_IDS[1], label: content.tabStyle },
+  ];
+  const [active, setActive] = useState<(typeof TAB_IDS)[number]>("spaces");
+  const { style } = content;
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const onKeyDown = (e: KeyboardEvent, i: number) => {
@@ -38,8 +24,8 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
     if (!keys.includes(e.key)) return;
     e.preventDefault();
     const n =
-      e.key === "Home" ? 0 : e.key === "End" ? TABS.length - 1 : (i + (e.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length;
-    setActive(TABS[n].id);
+      e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+    setActive(tabs[n].id);
     tabRefs.current[n]?.focus();
   };
 
@@ -48,15 +34,13 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
       <div className="wrap">
         <div className="heading-row" data-reveal>
           <div>
-            <p className="eyebrow">02 / Dalle idee allo spazio</p>
+            <p className="eyebrow">{content.eyebrow}</p>
             <h2 id="esempi-title">
-              Prima una visione.
-              <br />
-              <em>Poi le scelte.</em>
+              <Lines text={content.title} />
             </h2>
           </div>
           <div className="tabs" role="tablist" aria-label="Esempi visivi">
-            {TABS.map((t, i) => (
+            {tabs.map((t, i) => (
               <button
                 key={t.id}
                 ref={(el) => {
@@ -79,10 +63,16 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
         </div>
 
         <div id="spaces" className="gallery" role="tabpanel" aria-labelledby="tab-spaces" hidden={active !== "spaces"}>
-          {FIGURES.map((f) => (
-            <figure key={f.title}>
+          {content.figures.map((f, i) => (
+            <figure key={i}>
               <div className="gallery-image" data-reveal="image">
-                <Image src={f.image.src} alt={f.alt} fill sizes="(max-width: 620px) 100vw, 50vw" />
+                <Image
+                  src={f.image.src}
+                  alt={f.image.alt}
+                  fill
+                  sizes="(max-width: 620px) 100vw, 50vw"
+                  style={f.image.position ? { objectPosition: f.image.position } : undefined}
+                />
               </div>
               <figcaption className="figure-copy" data-reveal>
                 <div>
@@ -97,40 +87,37 @@ export function Examples({ mappaHref }: { mappaHref: string }) {
 
         <div id="style" className="moodboard" role="tabpanel" aria-labelledby="tab-style" hidden={active !== "style"}>
           <Carousel
-            slides={HERO_SLIDES}
+            slides={style.slides}
             label="Immagini della mappa di stile"
             className="style-gallery"
             sizes="(max-width: 620px) 100vw, 50vw"
             reveal
           />
           <div data-reveal-group>
-            <p className="eyebrow">Esempio illustrativo / Direzione naturale</p>
-            <div className="palette" role="img" aria-label="Palette: beige, burro, terracotta e noce">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
+            <p className="eyebrow">{style.eyebrow}</p>
+            {style.palette.length > 0 && (
+              <div
+                className="palette"
+                role="img"
+                aria-label={`Palette: ${style.palette.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " e $1")}`}
+                style={{ gridTemplateColumns: `repeat(${style.palette.length}, 1fr)` }}
+              >
+                {style.palette.map((c, i) => (
+                  <span key={i} style={{ backgroundColor: c.hex }} />
+                ))}
+              </div>
+            )}
             <h3>
-              Un filo conduttore
-              <br />
-              per le tue scelte.
+              <Lines text={style.title} />
             </h3>
-            <p>
-              Un colore, un pavimento, un arredo possono piacerti singolarmente. Un buon progetto nasce dal modo in cui
-              questi elementi dialogano tra loro.
-            </p>
-            <p>
-              La mappa di stile ti aiuta a vedere l’insieme prima di scegliere i singoli elementi: una bussola da
-              consultare per capire cosa introdurre, cosa mantenere e quali alternative seguire.
-            </p>
+            <Paragraphs text={style.text} />
             <Link href={mappaHref} className="text-link">
-              Scopri la mappa di stile <ArrowUpRight className="arrow" />
+              {style.link} <ArrowUpRight className="arrow" />
             </Link>
           </div>
         </div>
         <p className="image-note" data-reveal="fade">
-          Esempi illustrativi con immagini AI. Mostrano una direzione visiva e non sono fotografie di progetti realizzati.
+          {content.note}
         </p>
       </div>
     </section>

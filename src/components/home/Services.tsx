@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { SERVICES, servicePath, type Service } from "@/content/services";
+import { servicePath } from "@/content/services";
+import type { Home, Price as PriceValue, Service } from "@/content/types";
 import { Orient } from "./Orient";
 import { ArrowUpRight } from "@/components/Icons";
+import { Lines } from "@/components/Lines";
 
-export function Price({ price }: { price: Service["price"] }) {
+export function Price({ price }: { price: PriceValue }) {
   return (
     <div className="price">
       {price.from && <small>A partire da</small>}
@@ -13,28 +15,22 @@ export function Price({ price }: { price: Service["price"] }) {
   );
 }
 
-export function Services() {
+export function Services({ content, services }: { content: Home["services"]; services: Service[] }) {
   return (
     <section id="servizi" className="section wrap" aria-labelledby="servizi-title">
       <div className="heading-row" data-reveal>
         <div>
-          <p className="eyebrow">01 / I percorsi</p>
+          <p className="eyebrow">{content.eyebrow}</p>
           <h2 id="servizi-title">
-            Quanto è grande
-            <br />
-            <em>la tua idea?</em>
+            <Lines text={content.title} />
           </h2>
         </div>
         <p className="heading-aside">
-          Quattro modi di lavorare insieme.
-          <br />
-          Scegli il supporto di cui hai bisogno,
-          <br />
-          nel momento in cui ti serve.
+          <Lines text={content.aside} />
         </p>
       </div>
       <div className="services" data-reveal-group>
-        {SERVICES.map((s) => (
+        {services.map((s) => (
           <article key={s.id} id={s.id} className="service">
             <p className="eyebrow">
               <span className="number">{s.number}</span>
@@ -42,7 +38,7 @@ export function Services() {
             </p>
             <h3>
               {s.cardTitle.map((line, i) => (
-                <Fragment key={line}>
+                <Fragment key={i}>
                   {i > 0 && <br />}
                   {line}
                 </Fragment>
@@ -51,8 +47,8 @@ export function Services() {
             </h3>
             <p>{s.cardText}</p>
             <ul>
-              {s.cardBullets.map((b) => (
-                <li key={b}>{b}</li>
+              {s.cardBullets.map((b, i) => (
+                <li key={i}>{b}</li>
               ))}
             </ul>
             <div className="service-bottom">
@@ -65,9 +61,14 @@ export function Services() {
           </article>
         ))}
       </div>
-      <Orient
-        options={SERVICES.map((s) => ({ id: s.id, choice: s.choice, name: s.name, href: servicePath(s) }))}
-      />
+      {services.length > 0 && (
+        <Orient
+          eyebrow={content.orientEyebrow}
+          title={content.orientTitle}
+          result={content.orientResult}
+          options={services.map((s) => ({ id: s.id, choice: s.choice, name: s.name, href: servicePath(s) }))}
+        />
+      )}
     </section>
   );
 }

@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
-import { SERVICES, servicePath } from "@/content/services";
+import { servicePath } from "@/content/services";
+import { getServices } from "@/lib/cms";
 import { absoluteUrl } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const services = await getServices();
   return [
     { url: absoluteUrl("/"), changeFrequency: "monthly", priority: 1 },
-    ...SERVICES.map((s) => ({
+    ...services.map((s) => ({
       url: absoluteUrl(servicePath(s)),
       changeFrequency: "monthly" as const,
       priority: 0.8,

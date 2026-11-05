@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { SITE } from "@/lib/site";
+import { getSettings } from "@/lib/cms";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const site = await getSettings();
   return {
-    name: SITE.name,
-    short_name: SITE.handle,
-    description: SITE.description,
+    name: site.name,
+    short_name: site.handle,
+    description: site.description,
     start_url: "/",
     display: "browser",
     background_color: "#EEE9E2",

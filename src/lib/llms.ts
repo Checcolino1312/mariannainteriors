@@ -1,38 +1,40 @@
-import { FAQ, PROCESS } from "@/content/faq";
-import { SERVICES, servicePath } from "@/content/services";
-import { SITE, absoluteUrl } from "./site";
+import { servicePath } from "@/content/services";
+import type { Service } from "@/content/types";
+import { getHome, getServices, getSettings } from "./cms";
+import { SITE_URL, absoluteUrl } from "./site";
 
 // Testi per /llms.txt e /llms-full.txt (https://llmstxt.org): un riassunto in Markdown
-// che gli assistenti AI possono leggere e citare, generato dagli stessi dati delle pagine.
+// che gli assistenti AI possono leggere e citare, generato dagli stessi contenuti delle pagine (Sanity).
 
-const price = (s: (typeof SERVICES)[number]) => (s.price.from ? `a partire da ${s.price.label}` : s.price.label);
+const price = (s: Service) => (s.price.from ? `a partire da ${s.price.label}` : s.price.label);
 
-const howToBuy = (s: (typeof SERVICES)[number]) =>
-  s.detail.cta.kind === "booking"
+const howToBuy = (s: Service, email: string) =>
+  s.cta.kind === "booking"
     ? "Si prenota e si paga online dalla pagina del servizio (calendario Cal.com, pagamento Stripe)."
-    : s.detail.cta.kind === "payment"
+    : s.cta.kind === "payment"
       ? "Si acquista online dalla pagina del servizio (pagamento Stripe)."
-      : `Su richiesta via email a ${SITE.email}.`;
+      : `Su richiesta via email a ${email}.`;
 
-const howToPay = (s: (typeof SERVICES)[number]) =>
+const howToPay = (s: Service) =>
   s.bankTransfer ? ` Pagabile anche con bonifico bancario (IBAN e causale nella pagina del servizio).` : "";
 
-export function llmsTxt() {
-  return `# ${SITE.name}
+export async function llmsTxt() {
+  const [site, services] = await Promise.all([getSettings(), getServices()]);
+  return `# ${site.name}
 
-> ${SITE.name} (${SITE.handle}) è lo studio di interior design online di ${SITE.owner.name}, ${SITE.owner.role.toLowerCase()}. Offre consulenze, mappe di stile e progetti di interni interamente online, tramite fotografie, planimetrie e videocall. Payoff: "${SITE.payoff}".
+> ${site.name} (${site.handle}) è lo studio di interior design online di ${site.ownerName}, ${site.ownerRole.toLowerCase()}. Offre consulenze, mappe di stile e progetti di interni interamente online, tramite fotografie, planimetrie e videocall. Payoff: "${site.payoff}".
 
 Il metodo parte dalle ispirazioni e dalle abitudini di chi abita la casa e le traduce, attraverso moodboard, in una direzione progettuale coerente per spazi, colori, materiali e arredi.
 
 ## Servizi
 
-${SERVICES.map((s) => `- [${s.name}](${absoluteUrl(servicePath(s))}): ${s.seo.description}`).join("\n")}
+${services.map((s) => `- [${s.name}](${absoluteUrl(servicePath(s))}): ${s.seo.description}`).join("\n")}
 
 ## Contatti
 
-- Email: ${SITE.email}
-- Instagram: ${SITE.instagram}
-- Sito: ${SITE.url}
+- Email: ${site.email}
+- Instagram: ${site.instagram}
+- Sito: ${SITE_URL}
 
 ## Optional
 
@@ -41,38 +43,41 @@ ${SERVICES.map((s) => `- [${s.name}](${absoluteUrl(servicePath(s))}): ${s.seo.de
 `;
 }
 
-export function llmsFullTxt() {
-  return `# ${SITE.name} — informazioni complete
+export async function llmsFullTxt() {
+  const [site, services, home] = await Promise.all([getSettings(), getServices(), getHome()]);
+  return `# ${site.name} — informazioni complete
 
-> ${SITE.description}
+> ${site.description}
 
-- Titolare: ${SITE.owner.name}, ${SITE.owner.role}
+- Titolare: ${site.ownerName}, ${site.ownerRole}
 - Modalità: interamente online (fotografie, planimetrie, videocall)
-- Email: ${SITE.email}
-- Instagram: ${SITE.instagram}
-- P. IVA: ${SITE.vat}
+- Email: ${site.email}
+- Instagram: ${site.instagram}
+- P. IVA: ${site.vat}
 
 ## Servizi e prezzi
 
-${SERVICES.map(
-  (s) => `### ${s.number}. ${s.name} — ${price(s)}
+${services
+  .map(
+    (s) => `### ${s.number}. ${s.name} — ${price(s)}
 
 URL: ${absoluteUrl(servicePath(s))}
 
-Come acquistarlo: ${howToBuy(s)}${howToPay(s)}
+Come acquistarlo: ${howToBuy(s, site.email)}${howToPay(s)}
 
 ${s.detail.question} ${s.detail.text}
 
 ${s.detail.listIntro ? `${s.detail.listIntro}\n\n` : ""}${s.detail.bullets.map((b) => `- ${b}`).join("\n")}
 ${s.detail.note ? `\nNota: ${s.detail.note}\n` : ""}`,
-).join("\n")}
-## Come lavoriamo insieme
+  )
+  .join("\n")}
+## ${home.process.title}
 
-${PROCESS.map((p, i) => `${i + 1}. **${p.title}** — ${p.text}`).join("\n")}
+${home.process.steps.map((p, i) => `${i + 1}. **${p.title}** — ${p.text}`).join("\n")}
 
 ## Domande frequenti
 
-${FAQ.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
+${home.faq.items.map((f) => `### ${f.q}\n\n${f.a}`).join("\n\n")}
 
 ## Nota sulle immagini
 

@@ -1,44 +1,37 @@
-import { HERO_SLIDES } from "@/content/images";
-import { SITE } from "@/lib/site";
+import type { Home, Settings } from "@/content/types";
 import { Carousel } from "../Carousel";
 import { ArrowUpRight } from "@/components/Icons";
+import { Lines } from "@/components/Lines";
 
-export function Hero() {
+export function Hero({ hero, settings }: { hero: Home["hero"]; settings: Settings }) {
   return (
     <div id="inizio" className="wrap">
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy" data-reveal-group>
-          <p className="eyebrow">Consulenze e progetti di interior design online</p>
+          <p className="eyebrow">{hero.eyebrow}</p>
           <h1 id="hero-title">
-            Il tuo spazio,
-            <br />
-            con una
-            <br />
-            <em>direzione chiara.</em>
+            <Lines text={hero.title} />
           </h1>
-          <p>
-            Dalle prime idee alle scelte concrete, ti aiuto a definire i tuoi spazi e a scegliere colori, materiali e
-            arredi che funzionano insieme e rispecchiano la tua identità.
-          </p>
+          <p>{hero.text}</p>
           <a className="button hero-button" href="#servizi">
-            Scopri il servizio adatto a te <ArrowUpRight className="arrow" />
+            {hero.button} <ArrowUpRight className="arrow" />
           </a>
           <small>
-            {SITE.owner.name} · {SITE.owner.role}
+            {settings.ownerName} · {settings.ownerRole}
           </small>
         </div>
         <div className="hero-visual">
           <Carousel
-            slides={HERO_SLIDES}
+            slides={hero.slides}
             label="Galleria immagini"
             className="hero-carousel"
             sizes="(max-width: 620px) 100vw, 50vw"
-            counterLabel="Spazi da abitare"
-            note="Immagine d’atmosfera · AI"
+            counterLabel={hero.counterLabel}
+            note={hero.note}
             reveal
           />
           <span className="vertical" aria-hidden="true" data-reveal="fade">
-            I miei progetti
+            {hero.vertical}
           </span>
         </div>
       </section>

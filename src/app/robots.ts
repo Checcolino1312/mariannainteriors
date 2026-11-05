@@ -19,8 +19,9 @@ const AI_CRAWLERS = [
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/" },
-      { userAgent: AI_CRAWLERS, allow: "/" },
+      // Studio (area riservata a Marianna) e webhook non vanno nei risultati
+      { userAgent: "*", allow: "/", disallow: ["/studio", "/api/"] },
+      { userAgent: AI_CRAWLERS, allow: "/", disallow: ["/studio", "/api/"] },
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
   };

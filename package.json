@@ -8,15 +8,25 @@
     "start": "next start",
     "lint": "eslint",
     "assets": "node scripts/extract-assets.mjs",
-    "brand": "node scripts/build-brand.mjs"
+    "brand": "node scripts/build-brand.mjs",
+    "typecheck": "tsc --noEmit",
+    "sanity:import": "tsx --env-file=.env.local scripts/sanity-import.ts",
+    "sanity:backup": "sanity dataset export production backup-sanity.tar.gz"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
+    "@portabletext/react": "^7.0.1",
+    "@sanity/image-url": "^2.1.1",
     "next": "16.4.2",
+    "next-sanity": "^13.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "sanity": "^5.31.2",
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
+    "@sanity/client": "^7.28.0",
+    "@sanity/vision": "^5.31.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -25,6 +35,7 @@
     "png-to-ico": "^3.0.2",
     "potrace": "^2.1.8",
     "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

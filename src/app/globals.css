@@ -341,7 +341,7 @@ address {
   height: calc(100lvh + var(--materico-bleed) * 2);
   z-index: -1;
   background-color: var(--rust);
-  background-image: var(--materico-veil), url("/images/sfondo-intonaco-caldo.webp");
+  background-image: var(--materico-veil), var(--materico-portrait, url("/images/sfondo-intonaco-caldo.webp"));
   background-size: auto, auto, cover;
   background-position: 0 0, 0 0, var(--materico-pos);
   background-repeat: no-repeat;
@@ -355,7 +355,7 @@ address {
 /* Su schermi orizzontali lo sfondo è la versione orizzontale, come nell'intro */
 @media (orientation: landscape) {
   .header::before {
-    background-image: var(--materico-veil), url("/images/sfondo-intonaco-orizzontale.webp");
+    background-image: var(--materico-veil), var(--materico-landscape, url("/images/sfondo-intonaco-orizzontale.webp"));
   }
 }
 .header[data-over-intro="true"] {
@@ -1106,17 +1106,8 @@ address {
   height: 120px;
   margin-bottom: 30px;
 }
-.palette span:nth-child(1) {
-  background-color: var(--paper);
-}
-.palette span:nth-child(2) {
-  background-color: var(--butter);
-}
-.palette span:nth-child(3) {
-  background-color: var(--rust);
-}
-.palette span:nth-child(4) {
-  background-color: #2c1f17;
+/* I colori della palette arrivano da Sanity (style inline); il colore scuro finale ha un filo di contorno */
+.palette span:last-child {
   box-shadow: inset 0 0 0 1px #786353;
 }
 .moodboard p:not(.eyebrow) {

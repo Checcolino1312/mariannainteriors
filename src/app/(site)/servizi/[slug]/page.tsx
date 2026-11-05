@@ -6,40 +6,43 @@ import { BankTransfer } from "@/components/booking/BankTransfer";
 import { BookConsultation } from "@/components/booking/BookConsultation";
 import { JsonLd } from "@/components/JsonLd";
 import { Price } from "@/components/home/Services";
-import { SERVICES, getService, servicePath } from "@/content/services";
+import { servicePath } from "@/content/services";
+import { OG_IMAGE } from "@/lib/site";
+import { getService, getServices, getSettings } from "@/lib/cms";
 import { servicePageSchema } from "@/lib/schema";
 import { ArrowLeft, ArrowUpRight } from "@/components/Icons";
 
-export function generateStaticParams() {
-  return SERVICES.map((s) => ({ slug: s.slug }));
+export async function generateStaticParams() {
+  return (await getServices()).map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/servizi/[slug]">): Promise<Metadata> {
-  const service = getService((await params).slug);
+  const service = await getService((await params).slug);
   if (!service) return {};
   const url = servicePath(service);
   return {
     title: service.seo.title,
     description: service.seo.description,
     alternates: { canonical: url },
-    openGraph: { url, title: service.seo.title, description: service.seo.description },
-    twitter: { title: service.seo.title, description: service.seo.description },
+    openGraph: { url, title: service.seo.title, description: service.seo.description, images: [OG_IMAGE] },
+    twitter: { title: service.seo.title, description: service.seo.description, images: [OG_IMAGE] },
   };
 }
 
 export default async function ServicePage({ params }: PageProps<"/servizi/[slug]">) {
-  const service = getService((await params).slug);
+  const { slug } = await params;
+  const [service, services, settings] = await Promise.all([getService(slug), getServices(), getSettings()]);
   if (!service) notFound();
-  const { detail } = service;
-  const { cta } = detail;
-  const others = SERVICES.filter((s) => s.id !== service.id);
+  const { detail, cta } = service;
+  const others = services.filter((s) => s.slug !== service.slug);
+  const texts = settings.servicePage;
 
   return (
     <div className="page-offset">
       <article className="service-detail wrap" aria-labelledby="detail-title">
         <nav className="breadcrumb" aria-label="Percorso">
           <Link className="detail-back" href={`/#${service.id}`}>
-            <ArrowLeft className="arrow" /> Torna ai servizi
+            <ArrowLeft className="arrow" /> {texts.back}
           </Link>
         </nav>
         <div className="detail-grid">
@@ -49,8 +52,8 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
             className="detail-gallery"
             sizes="(max-width: 620px) 100vw, 50vw"
             eager
-            fit={service.id === "mappa" ? "contain" : "cover"}
-            note="Immagini illustrative · AI"
+            fit={detail.galleryFit}
+            note={texts.galleryNote}
           />
           <div className="detail-copy" data-reveal-group>
             <p className="eyebrow">
@@ -65,8 +68,8 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
             <p>{detail.text}</p>
             {detail.listIntro && <p className="detail-list-intro">{detail.listIntro}</p>}
             <ul>
-              {detail.bullets.map((b) => (
-                <li key={b}>{b}</li>
+              {detail.bullets.map((b, i) => (
+                <li key={i}>{b}</li>
               ))}
             </ul>
             {detail.note && <p className="detail-note">{detail.note}</p>}
@@ -87,9 +90,12 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
             </div>
             {service.bankTransfer && (
               <BankTransfer
+                bank={settings.bank}
+                email={settings.email}
                 service={service.name}
                 amount={service.price.label}
-                kind={service.id === "consulenza" ? "booking" : "payment"}
+                kind={service.bankTransfer.kind}
+                confirm={service.bankTransfer.confirm}
                 open={cta.kind === "email"}
               />
             )}
@@ -99,10 +105,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
                   Procedendo con l’acquisto accetti le <Link href="/condizioni-di-vendita">condizioni di vendita</Link>.
                 </p>
               ) : (
-                <p className="detail-note">
-                  Il servizio si svolge online, attraverso fotografie, planimetrie e videocall. Scrivimi per
-                  disponibilità, modalità di pagamento e prossimi passi.
-                </p>
+                <p className="detail-note">{texts.emailNote}</p>
               )
             ) : (
               <div className="purchase-note">
@@ -117,11 +120,11 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
 
         <nav className="other-services" aria-labelledby="other-services-title">
           <h2 id="other-services-title" className="eyebrow">
-            Altri percorsi
+            {texts.others}
           </h2>
           <ul data-reveal-group>
             {others.map((s) => (
-              <li key={s.id}>
+              <li key={s.slug}>
                 <Link href={servicePath(s)}>
                   <span className="number">{s.number}</span>
                   <span className="other-name">{s.name}</span>

@@ -1,37 +1,36 @@
 import Image from "next/image";
-import { REELS } from "@/content/images";
+import type { Home, Settings } from "@/content/types";
 import { getInstagramPosts } from "@/lib/instagram";
-import { SITE, mailto } from "@/lib/site";
+import { mailto } from "@/lib/site";
 import { ArrowUpRight, Play } from "@/components/Icons";
+import { Lines } from "@/components/Lines";
 
-export function Cta() {
+export function Cta({ cta, settings }: { cta: Home["cta"]; settings: Settings }) {
   return (
     <section className="cta" aria-labelledby="cta-title">
       <Image className="cta-wave" src="/images/onda-instagram.webp" alt="" width={2048} height={327} sizes="120vw" />
       <div data-reveal-group>
-        <p className="eyebrow">Iniziamo dal tuo spazio</p>
+        <p className="eyebrow">{cta.eyebrow}</p>
         <h2 id="cta-title">
-          Una casa più tua.
-          <br />
-          Una scelta alla volta.
+          <Lines text={cta.title} />
         </h2>
-        <a className="button" href={mailto("La mia idea per la casa")}>
-          Raccontami la tua idea <ArrowUpRight className="arrow" />
+        <a className="button" href={mailto(settings.email, cta.emailSubject)}>
+          {cta.button} <ArrowUpRight className="arrow" />
         </a>
       </div>
     </section>
   );
 }
 
-export async function Instagram() {
+export async function Instagram({ content, settings }: { content: Home["instagram"]; settings: Settings }) {
   const posts = await getInstagramPosts();
   return (
     <section id="instagram" className="instagram-section" aria-labelledby="instagram-title">
       <h2 id="instagram-title" data-reveal>
-        Seguimi su IG!
+        {content.title}
       </h2>
-      <a className="instagram-handle" href={SITE.instagram} target="_blank" rel="noopener noreferrer">
-        @{SITE.handle} <ArrowUpRight className="arrow" />
+      <a className="instagram-handle" href={settings.instagram} target="_blank" rel="noopener noreferrer">
+        @{settings.handle} <ArrowUpRight className="arrow" />
       </a>
       <div className="reels-grid" data-reveal-group>
         {posts.length > 0
@@ -56,17 +55,25 @@ export async function Instagram() {
                 {post.isVideo && <Play className="reel-play" />}
               </a>
             ))
-          : REELS.map((reel) => (
-              // Senza feed Behold: miniature salvate dalla bozza, mostrate intere (quadrate)
+          : content.fallback.map((reel, i) => (
+              // Senza feed Behold: miniature di riserva (Sanity o quelle salvate dalla bozza)
               <a
-                key={reel.src}
+                key={i}
                 className="reel-card"
-                href={SITE.instagramReels}
+                href={settings.instagramReels}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${reel.title} — guarda i Reel di @${SITE.handle} su Instagram`}
+                aria-label={`${reel.title} — guarda i Reel di @${settings.handle} su Instagram`}
               >
-                <Image src={reel.src} alt="" width={263} height={263} unoptimized />
+                <Image
+                  src={reel.image.src}
+                  alt=""
+                  width={reel.image.width}
+                  height={reel.image.height}
+                  sizes="(max-width: 620px) 33vw, 180px"
+                  // le miniature della bozza sono già piccole; quelle caricate su Sanity si ottimizzano
+                  unoptimized={reel.image.src.startsWith("/")}
+                />
                 <Play className="reel-play" />
               </a>
             ))}

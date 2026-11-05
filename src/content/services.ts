@@ -1,72 +1,18 @@
-import { BOOKING, mailto } from "@/lib/site";
-import { HERO_SLIDES, MOODBOARDS, type SiteImage } from "./images";
-
-export type Service = {
-  /** Ancora della card in home (compatibile con la bozza). */
-  id: "consulenza" | "mappa" | "ambiente" | "su-misura";
-  slug: string;
-  number: string;
-  eyebrow: string;
-  name: string;
-  /** Titolo della card, con eventuali a capo. */
-  cardTitle: string[];
-  cardSubtitle?: string;
-  cardText: string;
-  cardBullets: string[];
-  cardCta: string;
-  /** Prezzo: `amount` in euro se fisso o minimo, altrimenti testo libero. */
-  price: { amount?: number; from?: boolean; label: string };
-  detail: {
-    title: string;
-    subtitle?: string;
-    question: string;
-    text: string;
-    listIntro?: string;
-    bullets: string[];
-    note?: string;
-    cta: Cta;
-    gallery: SiteImage[];
-  };
-  seo: { title: string; description: string };
-  choice: string;
-  /** Pagabile anche con bonifico (dati in BANK, src/lib/site.ts). */
-  bankTransfer?: boolean;
-};
-
-/**
- * Azione principale della pagina servizio:
- * - "booking": prenotazione + pagamento su Cal.com (popup sul sito);
- * - "payment": pagamento con Stripe Payment Link;
- * - "email": richiesta via email precompilata (preventivi, o finché i link non sono configurati).
- */
-export type Cta =
-  | { kind: "booking"; label: string; calLink: string; note: string }
-  | { kind: "payment"; label: string; href: string; note: string }
-  | { kind: "email"; label: string; href: string };
+import { BOOKING_ENV, mailto, validCalLink, validPaymentLink } from "@/lib/site";
+import { HERO_SLIDES, MOODBOARDS } from "./images";
+import type { Cta, Service, ServiceInput, Settings } from "./types";
 
 const BILLING_NOTE = "Al momento del pagamento ti chiederò i dati per la fattura (codice fiscale e indirizzo).";
 
-function emailCta(label: string, subject: string, service: string): Cta {
-  return {
-    kind: "email",
-    label,
-    href: mailto(subject, `Buongiorno Marianna,\n\nvorrei ricevere informazioni sul servizio ${service}.\n\n`),
-  };
-}
-
-/** Il servizio è acquistabile online (link configurati in src/lib/site.ts). */
-export function isBookable(service: Service) {
-  return service.detail.cta.kind !== "email";
-}
-
-export const SERVICES: Service[] = [
+/** Servizi predefiniti: usati finché Sanity non è configurato e come seed dell'import. */
+export const DEFAULT_SERVICES: ServiceInput[] = [
   {
     id: "consulenza",
     slug: "consulenza-online",
     number: "01",
     eyebrow: "Dubbi da risolvere",
     name: "Consulenza online",
-    cardTitle: ["Consulenza online"],
+    cardTitle: "Consulenza online",
     cardSubtitle: "60 minuti, insieme",
     cardText:
       "Hai dubbi su colori, materiali o arredi? Un confronto mirato per valutare gli abbinamenti e capire come migliorare la tua casa.",
@@ -77,6 +23,7 @@ export const SERVICES: Service[] = [
     ],
     cardCta: "Scopri la consulenza",
     price: { amount: 149, label: "149 €" },
+    choice: "Ho un dubbio preciso",
     detail: {
       title: "Consulenza online",
       subtitle: "60 minuti",
@@ -87,23 +34,26 @@ export const SERVICES: Service[] = [
         "Videocall individuale di 60 minuti.",
         "Breve PDF riepilogativo con i consigli condivisi.",
       ],
-      cta: BOOKING.calLink
-        ? {
-            kind: "booking",
-            label: "Prenota e paga la consulenza",
-            calLink: BOOKING.calLink,
-            note: `Scegli giorno e orario e paghi online in modo sicuro con carta (Stripe). ${BILLING_NOTE} Subito dopo la prenotazione ti scrivo via email con le indicazioni per inviarmi il materiale, da mandare almeno 3 giorni prima della videocall.`,
-          }
-        : emailCta("Prenota la consulenza", "Richiesta consulenza 60 minuti", "Consulenza online 60 minuti"),
       gallery: HERO_SLIDES,
+      galleryFit: "cover",
+    },
+    action: {
+      kind: "booking",
+      label: "Prenota e paga la consulenza",
+      note: `Scegli giorno e orario e paghi online in modo sicuro con carta (Stripe). ${BILLING_NOTE} Subito dopo la prenotazione ti scrivo via email con le indicazioni per inviarmi il materiale, da mandare almeno 3 giorni prima della videocall.`,
+      emailLabel: "Prenota la consulenza",
+      emailSubject: "Richiesta consulenza 60 minuti",
+    },
+    bankTransfer: {
+      enabled: true,
+      confirm:
+        "Alla ricezione del pagamento ti confermo data e orario della videocall e ti scrivo con le indicazioni per il materiale, da inviare almeno 3 giorni prima.",
     },
     seo: {
-      title: "Consulenza di interior design online (60 minuti) – 149 €",
+      title: "Consulenza interior design online – 149 €",
       description:
-        "Consulenza di interior design online di 60 minuti con Marianna Mancini: analisi di foto e planimetrie, videocall dedicata ai tuoi dubbi su colori, materiali e arredi e PDF riepilogativo. 149 €.",
+        "Consulenza di interior design online di 60 minuti con Marianna Mancini: analisi di foto e planimetrie, videocall sui tuoi dubbi e PDF riepilogativo. 149 €.",
     },
-    choice: "Ho un dubbio preciso",
-    bankTransfer: true,
   },
   {
     id: "mappa",
@@ -111,7 +61,7 @@ export const SERVICES: Service[] = [
     number: "02",
     eyebrow: "Una guida personalizzata",
     name: "Mappa di stile",
-    cardTitle: ["Mappa", "di stile"],
+    cardTitle: "Mappa\ndi stile",
     cardText:
       "Tante idee, ma nessun filo conduttore? Definiamo lo stile della tua casa con una guida personalizzata per orientare le scelte successive.",
     cardBullets: [
@@ -121,6 +71,7 @@ export const SERVICES: Service[] = [
     ],
     cardCta: "Scopri la mappa di stile",
     price: { amount: 399, label: "399 €" },
+    choice: "Cerco il mio stile",
     detail: {
       title: "Mappa di stile",
       question: "Tante idee per la tua casa, ma non sai come metterle insieme?",
@@ -132,22 +83,22 @@ export const SERVICES: Service[] = [
         "Abaco arredi per riconoscere forme e finiture coerenti con lo stile.",
       ],
       note: "La mappa non comprende disposizione degli arredi, render o una shopping list di prodotti acquistabili.",
-      cta: BOOKING.mappaPaymentLink
-        ? {
-            kind: "payment",
-            label: "Acquista la mappa di stile",
-            href: BOOKING.mappaPaymentLink,
-            note: `Paghi online in modo sicuro con carta (Stripe). ${BILLING_NOTE} Subito dopo l’acquisto ti scrivo via email per farmi inviare foto e riferimenti: la mappa è pronta entro 2 settimane lavorative dal loro arrivo.`,
-          }
-        : emailCta("Richiedi la mappa di stile", "Informazioni mappa di stile", "Mappa di stile"),
       gallery: MOODBOARDS,
+      galleryFit: "contain",
+    },
+    action: {
+      kind: "payment",
+      label: "Acquista la mappa di stile",
+      note: `Paghi online in modo sicuro con carta (Stripe). ${BILLING_NOTE} Subito dopo l’acquisto ti scrivo via email per farmi inviare foto e riferimenti: la mappa è pronta entro 2 settimane lavorative dal loro arrivo.`,
+      paymentLink: BOOKING_ENV.mappaPaymentLink,
+      emailLabel: "Richiedi la mappa di stile",
+      emailSubject: "Informazioni mappa di stile",
     },
     seo: {
-      title: "Mappa di stile per la casa – moodboard, palette e materiali – 399 €",
+      title: "Mappa di stile per la casa – 399 €",
       description:
-        "La mappa di stile è una guida personalizzata per definire lo stile di tutta la casa: moodboard, palette colori con codici, materiali e finiture, abaco degli arredi. Servizio online, 399 €.",
+        "Guida personalizzata allo stile di tutta la casa: moodboard, palette colori con codici, materiali, finiture e abaco degli arredi. Servizio online, 399 €.",
     },
-    choice: "Cerco il mio stile",
   },
   {
     id: "ambiente",
@@ -155,7 +106,7 @@ export const SERVICES: Service[] = [
     number: "03",
     eyebrow: "Uno spazio da ripensare",
     name: "Progetto di un ambiente",
-    cardTitle: ["Progetto di", "un ambiente"],
+    cardTitle: "Progetto di\nun ambiente",
     cardText:
       "Vuoi ripensare il living, la camera o un altro ambiente? Studio lo spazio e gli arredi per unire le tue esigenze a uno stile coerente.",
     cardBullets: [
@@ -165,6 +116,7 @@ export const SERVICES: Service[] = [
     ],
     cardCta: "Scopri il progetto di un ambiente",
     price: { amount: 499, from: true, label: "499 €" },
+    choice: "Ripenso un ambiente",
     detail: {
       title: "Progetto di un ambiente",
       question: "Vuoi ripensare il living, la camera o un altro ambiente?",
@@ -175,15 +127,20 @@ export const SERVICES: Service[] = [
         "Modello 3D e 1–2 viste fotorealistiche dell’ambiente.",
         "Shopping list con arredi selezionati e link per l’acquisto.",
       ],
-      cta: emailCta("Richiedi un preventivo", "Progetto di un ambiente", "Progetto di un ambiente"),
       gallery: [...HERO_SLIDES].reverse(),
+      galleryFit: "cover",
+    },
+    action: {
+      kind: "email",
+      label: "Richiedi un preventivo",
+      emailLabel: "Richiedi un preventivo",
+      emailSubject: "Progetto di un ambiente",
     },
     seo: {
-      title: "Progetto di interior di un ambiente online – da 499 €",
+      title: "Progetto di un ambiente online – da 499 €",
       description:
-        "Progetto online di un singolo ambiente (living, camera, cucina, bagno): planimetria con arredi, moodboard, modello 3D con viste fotorealistiche e shopping list. A partire da 499 €.",
+        "Progetto online di un ambiente (living, camera, cucina, bagno): planimetria con arredi, moodboard, 3D con viste fotorealistiche e shopping list. Da 499 €.",
     },
-    choice: "Ripenso un ambiente",
   },
   {
     id: "su-misura",
@@ -191,7 +148,7 @@ export const SERVICES: Service[] = [
     number: "04",
     eyebrow: "Un percorso dedicato",
     name: "Progetto di interior su misura",
-    cardTitle: ["Progetto di interior", "su misura"],
+    cardTitle: "Progetto di interior\nsu misura",
     cardText:
       "Hai acquistato casa o stai ristrutturando un appartamento? Sviluppiamo un progetto coordinato, con contenuti definiti sulle tue esigenze.",
     cardBullets: [
@@ -201,6 +158,7 @@ export const SERVICES: Service[] = [
     ],
     cardCta: "Scopri il progetto su misura",
     price: { label: "Su preventivo" },
+    choice: "Ho un progetto più ampio",
     detail: {
       title: "Progetto di interior su misura",
       question: "Hai acquistato casa o stai ristrutturando un intero appartamento?",
@@ -214,27 +172,60 @@ export const SERVICES: Service[] = [
         "Schemi di impianti (elettrico, illuminotecnico).",
         "Arredi su misura o altri approfondimenti da concordare.",
       ],
-      cta: emailCta("Raccontami il tuo progetto", "Progetto di interior su misura", "Progetto di interior su misura"),
       gallery: HERO_SLIDES,
+      galleryFit: "cover",
+    },
+    action: {
+      kind: "email",
+      label: "Raccontami il tuo progetto",
+      emailLabel: "Raccontami il tuo progetto",
+      emailSubject: "Progetto di interior su misura",
     },
     seo: {
-      title: "Progetto di interior su misura per casa e ristrutturazione",
+      title: "Progetto di interior su misura",
       description:
-        "Progetto di interior su misura per chi ha acquistato casa o ristruttura: planimetria, moodboard, materiali, modelli 3D, shopping list, schemi luce e arredi su misura. Su preventivo.",
+        "Progetto di interior su misura per chi compra casa o ristruttura: planimetria, moodboard, materiali, 3D, shopping list, schemi luce e arredi su misura.",
     },
-    choice: "Ho un progetto più ampio",
   },
 ];
 
-export function getService(slug: string) {
-  return SERVICES.find((s) => s.slug === slug);
+/** Pulsante della pagina servizio: se il link di Cal.com o Stripe manca, si passa all'email. */
+function resolveCta(input: ServiceInput, settings: Settings): Cta {
+  const { action } = input;
+  const calLink = validCalLink(settings.calLink);
+  const paymentLink = validPaymentLink(action.paymentLink);
+  if (action.kind === "booking" && calLink)
+    return { kind: "booking", label: action.label, calLink, note: action.note ?? "" };
+  if (action.kind === "payment" && paymentLink)
+    return { kind: "payment", label: action.label, href: paymentLink, note: action.note ?? "" };
+  return {
+    kind: "email",
+    label: action.kind === "email" ? action.label : action.emailLabel,
+    href: mailto(
+      settings.email,
+      action.emailSubject,
+      `Buongiorno Marianna,\n\nvorrei ricevere informazioni sul servizio ${input.name}.\n\n`,
+    ),
+  };
 }
 
-export function servicePath(service: Service) {
+export function resolveService(input: ServiceInput, settings: Settings): Service {
+  const { cardTitle, action, bankTransfer, ...rest } = input;
+  return {
+    ...rest,
+    cardTitle: cardTitle.split("\n").map((l) => l.trim()).filter(Boolean),
+    cta: resolveCta(input, settings),
+    bankTransfer: bankTransfer?.enabled
+      ? { kind: action.kind === "booking" ? "booking" : "payment", confirm: bankTransfer.confirm }
+      : undefined,
+  };
+}
+
+export function servicePath(service: Pick<Service, "slug">) {
   return `/servizi/${service.slug}`;
 }
 
 /** Vecchi indirizzi a hash della bozza (#servizio/mappa) -> nuove pagine. */
-export const LEGACY_HASHES: Record<string, string> = Object.fromEntries(
-  SERVICES.map((s) => [`#servizio/${s.id}`, servicePath(s)]),
-);
+export function legacyHashes(services: Service[]): Record<string, string> {
+  return Object.fromEntries(services.map((s) => [`#servizio/${s.id}`, servicePath(s)]));
+}

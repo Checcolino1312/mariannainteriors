@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, type KeyboardEvent } from "react";
-import type { SiteImage } from "@/content/images";
+import type { SiteImage } from "@/content/types";
 import { ArrowLeft, ArrowRight } from "@/components/Icons";
 
 type Props = {
@@ -40,11 +40,12 @@ export function Carousel({ slides, label, className = "", sizes, eager, fit = "c
       <div className={`carousel-frame carousel-frame--${fit}`} data-reveal={reveal ? "image" : undefined}>
         {slides.map((slide, i) => (
           <Image
-            key={slide.src}
+            key={`${slide.src}-${i}`}
             src={slide.src}
             alt={slide.alt}
             fill
             sizes={sizes}
+            style={slide.position && fit === "cover" ? { objectPosition: slide.position } : undefined}
             className={i === index ? "is-active" : undefined}
             aria-hidden={i === index ? undefined : true}
             loading={eager && i === 0 ? "eager" : "lazy"}

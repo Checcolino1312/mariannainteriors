@@ -19,13 +19,15 @@ npm run brand    # rigenera logo vettoriale, favicon, icone e immagine Open Grap
 
 ## Dove modificare
 
+I contenuti (testi, servizi, prezzi, immagini, contatti, bonifico, link Cal.com e Stripe, pagine legali) si modificano in **Sanity Studio** su `/studio`. Configurazione e guida: [docs/sanity.md](docs/sanity.md). Senza le variabili Sanity il sito usa i contenuti predefiniti nel codice.
+
 | Cosa | File |
 | --- | --- |
-| Dominio, email, P. IVA, Instagram | `src/lib/site.ts` (o variabile `NEXT_PUBLIC_SITE_URL`) |
-| Prenotazione consulenza (Cal.com) e pagamento mappa (Stripe) | variabili `NEXT_PUBLIC_CAL_LINK` e `NEXT_PUBLIC_MAPPA_PAYMENT_LINK`, oppure `BOOKING` in `src/lib/site.ts` — guida: [docs/prenotazioni-e-pagamenti.md](docs/prenotazioni-e-pagamenti.md) |
-| Servizi, prezzi, testi delle pagine servizio, testi SEO | `src/content/services.ts` |
-| FAQ e "Come lavoriamo insieme" | `src/content/faq.ts` |
-| Immagini (progetti, moodboard, reel, ritratto) | `src/content/images.ts` + `public/images/` |
+| Contenuti predefiniti (seed dell'import Sanity) | `src/content/settings.ts`, `home.ts`, `services.ts`, `pages.ts`, `images.ts` |
+| Schemi dello Studio | `src/sanity/schemaTypes/` |
+| Lettura dei contenuti, cache e fallback | `src/lib/cms.ts` (webhook: `src/app/api/revalidate/route.ts`) |
+| Dominio | variabile `NEXT_PUBLIC_SITE_URL` (`src/lib/site.ts`) |
+| Prenotazioni e pagamenti | guida: [docs/prenotazioni-e-pagamenti.md](docs/prenotazioni-e-pagamenti.md) |
 | Stili | `src/app/globals.css` |
 
 Servizi, FAQ e dati di contatto alimentano in automatico pagine, dati strutturati (JSON-LD), `sitemap.xml` e `llms.txt`: si aggiornano in un posto solo.

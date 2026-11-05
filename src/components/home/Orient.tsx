@@ -7,13 +7,15 @@ import { ArrowUpRight } from "@/components/Icons";
 type Option = { id: string; choice: string; name: string; href: string };
 
 /** "Da dove vuoi iniziare?": suggerisce il servizio in base all'esigenza scelta. */
-export function Orient({ options }: { options: Option[] }) {
+type Props = { eyebrow: string; title: string; result: string; options: Option[] };
+
+export function Orient({ eyebrow, title, result, options }: Props) {
   const [selected, setSelected] = useState(options[0]);
   return (
     <div className="orient" data-reveal>
       <div>
-        <p className="eyebrow">Un piccolo orientamento</p>
-        <h3>Da dove vuoi iniziare?</h3>
+        <p className="eyebrow">{eyebrow}</p>
+        <h3>{title}</h3>
       </div>
       <div>
         <div className="choices" role="group" aria-label="Scegli la tua esigenza">
@@ -31,7 +33,7 @@ export function Orient({ options }: { options: Option[] }) {
         </div>
         <div className="recommend" aria-live="polite">
           <div>
-            <p className="eyebrow">Il tuo punto di partenza</p>
+            <p className="eyebrow">{result}</p>
             <h3>{selected.name}</h3>
           </div>
           <Link className="recommend-link" href={selected.href} aria-label={`Scopri: ${selected.name}`}>

@@ -1,67 +1,61 @@
 import Image from "next/image";
-import { FAQ, PROCESS } from "@/content/faq";
-import { PORTRAIT } from "@/content/images";
-import { SITE } from "@/lib/site";
+import type { Home, Settings } from "@/content/types";
 import { ArrowUpRight } from "@/components/Icons";
+import { Lines } from "@/components/Lines";
+import { RichText } from "@/components/RichText";
 
-export function About() {
+type Props = {
+  about: Home["about"];
+  process: Home["process"];
+  faq: Home["faq"];
+  settings: Settings;
+};
+
+export function About({ about, process, faq, settings }: Props) {
+  const { portrait } = about;
   return (
     <section id="chi-sono" className="section wrap" aria-labelledby="chi-sono-title">
       <div className="about">
         <div className="about-head">
           <p className="eyebrow" data-reveal>
-            03 / Il mio approccio
+            {about.eyebrow}
           </p>
           <h2 id="chi-sono-title" data-reveal>
-            Piacere,
-            <br />
-            <em>sono Marianna.</em>
+            <Lines text={about.title} />
           </h2>
         </div>
         <div className="about-portrait" data-reveal="image">
-          <Image src={PORTRAIT.src} alt={PORTRAIT.alt} width={PORTRAIT.width} height={PORTRAIT.height} sizes="(max-width: 620px) 90vw, 440px" />
+          <Image
+            src={portrait.src}
+            alt={portrait.alt}
+            width={portrait.width}
+            height={portrait.height}
+            sizes="(max-width: 620px) 90vw, 440px"
+          />
         </div>
         <div className="about-copy" data-reveal-group>
-          <h3>Ti aiuto a dare una direzione alle idee e forma ai tuoi spazi.</h3>
-          <p>
-            Mi sono formata in architettura e ho scelto di dedicarmi all’interior design: all’organizzazione degli spazi e
-            all’equilibrio tra materia e forme.
-          </p>
-          <p>
-            Spesso le difficoltà nascono all’inizio: si scelgono pavimenti, colori e arredi separatamente, senza sapere
-            come funzioneranno insieme. Il mio lavoro parte da qui: mettere ordine nelle idee e sviluppare una visione
-            d’insieme prima di procedere con le singole decisioni.
-          </p>
-          <p>Partiamo dalle tue ispirazioni, da chi sei, da come vivi quotidianamente i tuoi spazi.</p>
-          <p>
-            Attraverso le moodboard traduco questi riferimenti in una direzione progettuale, che sviluppo nella
-            disposizione degli spazi, nei materiali, nei colori e in tutto l’arredamento. Un progetto in cui ritrovare
-            chi sei e ciò che ti piace, con un filo conduttore tra le diverse scelte.
-          </p>
-          <p>
-            Lavoriamo online, attraverso fotografie, planimetrie e videocall, dalle prime idee alla definizione del
-            progetto di interior.
-          </p>
+          <h3>{about.subtitle}</h3>
+          <RichText value={about.body} />
           <div className="about-signature">
             <p>
-              <strong>{SITE.owner.name}</strong>
+              <strong>{settings.ownerName}</strong>
               <br />
-              Interior designer
+              {about.signatureRole}
             </p>
           </div>
           <a className="text-link" href="#servizi">
-            Scegliamo da dove iniziare <ArrowUpRight className="arrow" />
+            {about.link} <ArrowUpRight className="arrow" />
           </a>
         </div>
       </div>
 
       <div className="process">
         <h3 className="eyebrow" data-reveal="fade">
-          Come lavoriamo insieme
+          {process.title}
         </h3>
         <ol className="process-grid" data-reveal-group>
-          {PROCESS.map((step, i) => (
-            <li className="process-item" key={step.title}>
+          {process.steps.map((step, i) => (
+            <li className="process-item" key={i}>
               <span className="number" aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -76,16 +70,14 @@ export function About() {
 
       <div className="faq">
         <div data-reveal>
-          <p className="eyebrow">Prima di iniziare</p>
+          <p className="eyebrow">{faq.eyebrow}</p>
           <h2>
-            Qualche
-            <br />
-            <em>risposta utile.</em>
+            <Lines text={faq.title} />
           </h2>
         </div>
         <div data-reveal-group>
-          {FAQ.map((item) => (
-            <details key={item.q}>
+          {faq.items.map((item, i) => (
+            <details key={i}>
               <summary>{item.q}</summary>
               <p>{item.a}</p>
             </details>

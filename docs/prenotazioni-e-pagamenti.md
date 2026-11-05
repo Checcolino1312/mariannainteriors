@@ -28,7 +28,7 @@ Costi: Cal.com è gratuito; Stripe non ha canone e trattiene una commissione su 
 
 Per ora la mappa di stile **non si paga online**: il pulsante "Richiedi la mappa di stile" apre un'email a te, e modalità di pagamento e prossimi passi li concordi rispondendo. Consegna entro **2 settimane lavorative** dall'arrivo del materiale.
 
-Se in futuro vorrai il pagamento online, il sito è già pronto: crei in Stripe un *Payment Link* (prodotto "Mappa di stile" 399 €, indirizzo di fatturazione, campi personalizzati Codice fiscale / P. IVA / SDI o PEC, reindirizzamento a `https://www.mariannainteriors.it/grazie?servizio=mappa`) e lo inserisci come `NEXT_PUBLIC_MAPPA_PAYMENT_LINK`.
+Se in futuro vorrai il pagamento online, il sito è già pronto: crei in Stripe un *Payment Link* (prodotto "Mappa di stile" 399 €, indirizzo di fatturazione, campi personalizzati Codice fiscale / P. IVA / SDI o PEC, reindirizzamento a `https://www.mariannainteriors.it/grazie?servizio=mappa`) e lo incolli nello Studio (*Servizi > Mappa di stile > Prenotazione e pagamento*, tipo "Acquista con Stripe Payment Link").
 
 ## 3. Cal.com per la consulenza
 
@@ -56,8 +56,8 @@ Dopo ogni prenotazione **scrivi tu al cliente** con le indicazioni per il materi
 
 ## 4. Link nel sito (già fatto)
 
-Il link dell'evento è già inserito: **`cal.com/marianna.interiors/consulenza-60min`** (in `src/lib/site.ts`, `BOOKING.calLink`).
-Se in futuro cambi il nome utente o lo slug dell'evento su Cal.com, va aggiornato lì (oppure con la variabile `NEXT_PUBLIC_CAL_LINK` nel pannello dell'hosting).
+Il link dell'evento è già inserito: **`cal.com/marianna.interiors/consulenza-60min`**.
+Se in futuro cambi il nome utente o lo slug dell'evento su Cal.com, va aggiornato nello Studio (*Impostazioni del sito > Prenotazioni e bonifico*; vedi [sanity.md](sanity.md)).
 
 **Non serve creare un prodotto su Stripe per la consulenza**: il prezzo (149 €) è impostato nell'evento Cal.com, e Cal.com usa il tuo account Stripe collegato per incassare. Su Stripe vedrai direttamente i pagamenti.
 

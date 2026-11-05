@@ -1,7 +1,6 @@
-import { FAQ } from "@/content/faq";
-import { PORTRAIT } from "@/content/images";
-import { SERVICES, servicePath, type Service } from "@/content/services";
-import { SITE, absoluteUrl, calUrl } from "./site";
+import { servicePath } from "@/content/services";
+import type { Faq, Service, Settings, SiteImage } from "@/content/types";
+import { SITE_URL, absoluteUrl, calUrl } from "./site";
 
 // Dati strutturati schema.org: identità unica (@id) riusata da tutte le pagine,
 // così motori di ricerca e assistenti AI collegano persona, attività e servizi.
@@ -52,31 +51,31 @@ export function serviceSchema(service: Service) {
 
 /** Azione online disponibile (prenota e paga / acquista), solo se configurata. */
 function purchaseAction(service: Service) {
-  const { cta } = service.detail;
+  const { cta } = service;
   if (cta.kind === "booking")
     return { potentialAction: { "@type": "ReserveAction", name: cta.label, target: calUrl(cta.calLink) } };
   if (cta.kind === "payment") return { potentialAction: { "@type": "BuyAction", name: cta.label, target: cta.href } };
   return {};
 }
 
-export function siteSchema() {
+export function siteSchema(site: Settings, services: Service[], portrait: SiteImage) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "ProfessionalService",
         "@id": ORG_ID,
-        name: SITE.name,
-        alternateName: SITE.handle,
-        slogan: SITE.payoff,
-        description: SITE.description,
-        url: SITE.url,
-        email: SITE.email,
-        vatID: `IT${SITE.vat}`,
+        name: site.name,
+        alternateName: site.handle,
+        slogan: site.payoff,
+        description: site.description,
+        url: SITE_URL,
+        email: site.email,
+        vatID: `IT${site.vat}`,
         logo: absoluteUrl("/icon-512.png"),
         image: absoluteUrl("/opengraph-image.jpg"),
         founder: { "@id": PERSON_ID },
-        sameAs: [SITE.instagram],
+        sameAs: [site.instagram],
         areaServed: { "@type": "Country", name: "Italia" },
         paymentAccepted: "Carta di credito, carta di debito, bonifico bancario",
         currenciesAccepted: "EUR",
@@ -92,24 +91,24 @@ export function siteSchema() {
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Servizi di interior design online",
-          itemListElement: SERVICES.map((s) => ({ "@type": "Offer", itemOffered: { "@id": absoluteUrl(`${servicePath(s)}#service`) } })),
+          itemListElement: services.map((s) => ({ "@type": "Offer", itemOffered: { "@id": absoluteUrl(`${servicePath(s)}#service`) } })),
         },
       },
       {
         "@type": "Person",
         "@id": PERSON_ID,
-        name: SITE.owner.name,
-        jobTitle: SITE.owner.role,
-        image: absoluteUrl(PORTRAIT.src),
+        name: site.ownerName,
+        jobTitle: site.ownerRole,
+        image: absoluteUrl(portrait.src),
         worksFor: { "@id": ORG_ID },
-        sameAs: [SITE.instagram],
+        sameAs: [site.instagram],
         knowsAbout: ["Interior design", "Progettazione d'interni", "Moodboard"],
       },
       {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
-        url: SITE.url,
-        name: SITE.name,
+        url: SITE_URL,
+        name: site.name,
         inLanguage: "it-IT",
         publisher: { "@id": ORG_ID },
       },
@@ -117,25 +116,25 @@ export function siteSchema() {
   };
 }
 
-export function homeSchema() {
+export function homeSchema(site: Settings, services: Service[], faq: Faq[]) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebPage",
         "@id": absoluteUrl("/#webpage"),
-        url: SITE.url,
-        name: SITE.title,
-        description: SITE.description,
+        url: SITE_URL,
+        name: site.title,
+        description: site.description,
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": ORG_ID },
         inLanguage: "it-IT",
       },
-      ...SERVICES.map(serviceSchema),
+      ...services.map(serviceSchema),
       {
         "@type": "FAQPage",
         "@id": absoluteUrl("/#faq"),
-        mainEntity: FAQ.map((f) => ({
+        mainEntity: faq.map((f) => ({
           "@type": "Question",
           name: f.q,
           acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -153,7 +152,7 @@ export function servicePageSchema(service: Service) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
           { "@type": "ListItem", position: 2, name: "Servizi", item: absoluteUrl("/#servizi") },
           { "@type": "ListItem", position: 3, name: service.name, item: absoluteUrl(servicePath(service)) },
         ],

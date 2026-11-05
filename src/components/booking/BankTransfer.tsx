@@ -1,16 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { BANK, formatIban, mailto } from "@/lib/site";
+import type { Settings } from "@/content/types";
+import { formatIban, mailto } from "@/lib/site";
 import { ArrowUpRight } from "@/components/Icons";
 
 type Props = {
+  bank: Settings["bank"];
+  email: string;
   service: string;
   amount: string;
   /** "booking": la data della consulenza si fissa via email dopo il bonifico. */
   kind: "booking" | "payment";
   /** Aperto di default quando il bonifico è l'unico modo di pagare online. */
   open?: boolean;
+  /** Ultimo passo: cosa succede alla ricezione del bonifico. */
+  confirm: string;
 };
 
 function CopyButton({ value, label }: { value: string; label: string }) {
@@ -32,7 +37,12 @@ function CopyButton({ value, label }: { value: string; label: string }) {
 }
 
 /** Istruzioni per pagare con bonifico e inviare ricevuta e dati per la fattura via email. */
-export function BankTransfer({ service, amount, kind, open }: Props) {
+export function BankTransfer({ bank, email, service, amount, kind, open, confirm }: Props) {
+  const iban = bank.iban.replace(/\s+/g, "");
+  // "nome cognome" nella causale è il segnaposto che il cliente sostituisce: lo mostriamo in corsivo.
+  const placeholder = bank.causale.indexOf("nome cognome");
+  const causaleStart = placeholder >= 0 ? bank.causale.slice(0, placeholder) : bank.causale;
+  const causaleEnd = placeholder >= 0 ? bank.causale.slice(placeholder + "nome cognome".length) : null;
   const body = [
     "Buongiorno Marianna,",
     "",
@@ -49,17 +59,17 @@ export function BankTransfer({ service, amount, kind, open }: Props) {
 
   return (
     <details className="bank-transfer" open={open}>
-      <summary>Preferisci pagare con bonifico?</summary>
+      <summary>{bank.title}</summary>
       <dl className="bank-data">
         <div>
           <dt>Intestatario</dt>
-          <dd>{BANK.holder}</dd>
+          <dd>{bank.holder}</dd>
         </div>
         <div>
           <dt>IBAN</dt>
           <dd>
-            <span className="iban">{formatIban(BANK.iban)}</span>
-            <CopyButton value={BANK.iban} label="IBAN" />
+            <span className="iban">{formatIban(iban)}</span>
+            <CopyButton value={iban} label="IBAN" />
           </dd>
         </div>
         <div>
@@ -70,24 +80,26 @@ export function BankTransfer({ service, amount, kind, open }: Props) {
           <dt>Causale</dt>
           <dd>
             <span>
-              {BANK.causale.replace("nome cognome", "")}
-              <em>nome cognome</em>
+              {causaleStart}
+              {causaleEnd !== null && (
+                <>
+                  <em>nome cognome</em>
+                  {causaleEnd}
+                </>
+              )}
             </span>
-            <CopyButton value={BANK.causale} label="causale" />
+            <CopyButton value={bank.causale} label="causale" />
           </dd>
         </div>
       </dl>
       <ol className="bank-steps">
-        <li>Effettua il bonifico indicando il tuo nome e cognome nella causale.</li>
-        <li>Inviami la ricevuta via email insieme ai dati per la fattura (codice fiscale e indirizzo).</li>
-        <li>
-          {kind === "booking"
-            ? "Alla ricezione del pagamento ti confermo data e orario della videocall e ti scrivo con le indicazioni per il materiale, da inviare almeno 3 giorni prima."
-            : "Alla ricezione del pagamento ti scrivo per farmi inviare il materiale: la mappa è pronta entro 2 settimane lavorative dal suo arrivo."}
-        </li>
+        {bank.steps.map((step, i) => (
+          <li key={i}>{step}</li>
+        ))}
+        {confirm && <li>{confirm}</li>}
       </ol>
-      <a className="text-link" href={mailto(`Bonifico ${service} - nome cognome`, body)}>
-        Invia ricevuta e dati per la fattura <ArrowUpRight className="arrow" />
+      <a className="text-link" href={mailto(email, `Bonifico ${service} - nome cognome`, body)}>
+        {bank.link} <ArrowUpRight className="arrow" />
       </a>
     </details>
   );

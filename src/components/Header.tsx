@@ -2,16 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import type { NavItem, Settings } from "@/content/types";
 import { Lockup } from "./brand/Logo";
 
-const NAV = [
-  { href: "/#servizi", label: "Servizi" },
-  { href: "/#chi-sono", label: "Chi sono" },
-  { href: "/#contatti", label: "Contattami" },
-];
+/**
+ * Immagine di sfondo per CSS. Quelle di Sanity passano dall'ottimizzatore di Next, come le altre
+ * immagini: il browser del visitatore non contatta servizi esterni (vedi privacy).
+ */
+const cssUrl = (src: string) =>
+  `url("${src.startsWith("/") ? src : `/_next/image?url=${encodeURIComponent(src)}&w=1920&q=75`}")`;
 
-export function Header() {
+type Props = { nav: NavItem[]; background: Settings["background"]; siteName: string };
+
+export function Header({ nav, background, siteName }: Props) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [open, setOpen] = useState(false);
@@ -49,9 +53,19 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="header" data-over-intro={transparent ? "true" : "false"}>
+    <header
+      className="header"
+      data-over-intro={transparent ? "true" : "false"}
+      // Lo sfondo materico è lo stesso dell'intro (modificabile in Sanity): vedi .header::before
+      style={
+        {
+          "--materico-portrait": cssUrl(background.portrait.src),
+          "--materico-landscape": cssUrl(background.landscape.src),
+        } as CSSProperties
+      }
+    >
       <div className="wrap header-inner">
-        <Link className="header-logo" href="/" aria-label="Marianna Interiors, vai alla home" onClick={() => setOpen(false)}>
+        <Link className="header-logo" href="/" aria-label={`${siteName}, vai alla home`} onClick={() => setOpen(false)}>
           <Lockup tone="light" monogram={false} />
         </Link>
         <button
@@ -65,7 +79,7 @@ export function Header() {
           <span>{open ? "Chiudi" : "Menu"}</span>
         </button>
         <nav id="nav" className={`nav${open ? " open" : ""}`} aria-label="Navigazione principale">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
               {item.label}
             </Link>
