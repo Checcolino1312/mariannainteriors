@@ -52,7 +52,7 @@ export function Header() {
     <header className="header" data-over-intro={transparent ? "true" : "false"}>
       <div className="wrap header-inner">
         <Link className="header-logo" href="/" aria-label="Marianna Interiors, vai alla home" onClick={() => setOpen(false)}>
-          <Lockup tone="light" />
+          <Lockup tone="light" monogram={false} />
         </Link>
         <button
           className="menu"

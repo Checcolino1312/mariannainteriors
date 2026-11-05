@@ -45,10 +45,19 @@ export function Wordmark({ title, ...props }: SvgProps & { title?: string }) {
  * tone="light": su fondi scuri/materici (pittogramma e wordmark beige, payoff burro).
  * tone="dark": su beige (pittogramma terracotta, wordmark noce, payoff terracotta).
  */
-export function Lockup({ tone, className = "" }: { tone: "light" | "dark"; className?: string }) {
+export function Lockup({
+  tone,
+  className = "",
+  monogram = true,
+}: {
+  tone: "light" | "dark";
+  className?: string;
+  /** false: solo lettering "marianna.interiors" + payoff (usato nella navbar) */
+  monogram?: boolean;
+}) {
   return (
-    <span className={`lockup lockup--${tone} ${className}`}>
-      <Monogram className="lockup-monogram" />
+    <span className={`lockup lockup--${tone}${monogram ? "" : " lockup--lettering"} ${className}`}>
+      {monogram && <Monogram className="lockup-monogram" />}
       <Wordmark className="lockup-wordmark" />
     </span>
   );
