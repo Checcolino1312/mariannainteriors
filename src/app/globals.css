@@ -297,22 +297,30 @@ address {
   fill: var(--logo-payoff);
 }
 
-/* Navbar: solo lettering con il payoff completo, senza monogramma */
+/* Navbar: pittogramma + lettering con il payoff completo, nelle proporzioni del lockup ufficiale
+   (pittogramma alto circa un quarto della larghezza del lettering) */
+.lockup.lockup--lettering {
+  --mono-h: 50px;
+}
 .lockup--lettering .lockup-wordmark {
-  width: 220px;
-  transform: none;
+  width: 198px;
 }
 /* sullo sfondo materico della navbar il terracotta scuro non si legge: payoff in beige chiaro
    pieno, con un'ombra leggerissima che lo stacca dalla texture */
 .lockup--lettering .wordmark-payoff {
   fill: #eae6dc;
 }
-.lockup--lettering .lockup-wordmark {
+.lockup--lettering .lockup-wordmark,
+.lockup--lettering .lockup-monogram {
   filter: drop-shadow(0 1px 1.5px rgba(64, 46, 35, 0.35));
 }
 @media (max-width: 620px) {
+  .lockup.lockup--lettering {
+    --mono-h: 41px;
+    gap: 10px;
+  }
   .lockup--lettering .lockup-wordmark {
-    width: 178px;
+    width: 160px;
   }
 }
 

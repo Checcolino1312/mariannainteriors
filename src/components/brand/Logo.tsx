@@ -48,16 +48,16 @@ export function Wordmark({ title, ...props }: SvgProps & { title?: string }) {
 export function Lockup({
   tone,
   className = "",
-  monogram = true,
+  lettering = false,
 }: {
   tone: "light" | "dark";
   className?: string;
-  /** false: solo lettering "marianna.interiors" + payoff (usato nella navbar) */
-  monogram?: boolean;
+  /** Variante della navbar: lettering più leggibile sullo sfondo materico (payoff chiaro, ombra) */
+  lettering?: boolean;
 }) {
   return (
-    <span className={`lockup lockup--${tone}${monogram ? "" : " lockup--lettering"} ${className}`}>
-      {monogram && <Monogram className="lockup-monogram" />}
+    <span className={`lockup lockup--${tone}${lettering ? " lockup--lettering" : ""} ${className}`}>
+      <Monogram className="lockup-monogram" />
       <Wordmark className="lockup-wordmark" />
     </span>
   );

@@ -66,7 +66,7 @@ export function Header({ nav, background, siteName }: Props) {
     >
       <div className="wrap header-inner">
         <Link className="header-logo" href="/" aria-label={`${siteName}, vai alla home`} onClick={() => setOpen(false)}>
-          <Lockup tone="light" monogram={false} />
+          <Lockup tone="light" lettering />
         </Link>
         <button
           className="menu"
