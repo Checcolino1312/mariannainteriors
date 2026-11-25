@@ -54,6 +54,7 @@ export default async function ServicePage({ params }: PageProps<"/servizi/[slug]
             eager
             fit={detail.galleryFit}
             note={texts.galleryNote}
+            controlsBelow
           />
           <div className="detail-copy" data-reveal-group>
             <p className="eyebrow">

@@ -790,6 +790,31 @@ address {
 .carousel-arrow:focus-visible {
   outline-color: var(--walnut);
 }
+/* Frecce sotto l'immagine (pagine servizio): a sinistra, dove il bordo dell'immagine non si sposta
+   cambiando foto; didascalia sulla stessa riga */
+.carousel-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+}
+.carousel-footer .carousel-controls {
+  position: static;
+  flex-shrink: 0;
+}
+.carousel-footer .carousel-arrow {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-color: var(--walnut);
+}
+.carousel-footer .carousel-arrow:hover {
+  background-color: var(--butter);
+}
+.carousel-footer .carousel-caption {
+  flex: 1;
+  margin-top: 0;
+}
 .carousel-caption {
   display: flex;
   justify-content: space-between;
@@ -1475,10 +1500,14 @@ details p {
 .detail-gallery .carousel-frame {
   height: clamp(390px, 47vw, 650px);
 }
-/* immagini intere: altezza data dalla proporzione dell'immagine, con un limite per quelle molto verticali */
+/* immagini intere: il riquadro ha la proporzione dell'immagine. La galleria si restringe per le
+   immagini molto verticali (altezza massima 650px / 80% dello schermo), così frecce e didascalia
+   restano allineate ai bordi dell'immagine. */
+.detail-gallery.carousel--contain {
+  width: min(100%, calc(min(650px, 80vh) * var(--ratio, 0.8)));
+}
 .detail-gallery .carousel-frame--contain {
   height: auto;
-  max-height: min(650px, 80vh);
 }
 .detail-copy .eyebrow {
   letter-spacing: 1.4px;
