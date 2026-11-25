@@ -37,7 +37,12 @@ export function Carousel({ slides, label, className = "", sizes, eager, fit = "c
 
   return (
     <div className={`carousel ${className}`} role="region" aria-roledescription="carosello" aria-label={label} onKeyDown={onKeyDown}>
-      <div className={`carousel-frame carousel-frame--${fit}`} data-reveal={reveal ? "image" : undefined}>
+      <div
+        className={`carousel-frame carousel-frame--${fit}`}
+        data-reveal={reveal ? "image" : undefined}
+        // Immagini intere: il riquadro prende la proporzione dell'immagine mostrata, senza bande bianche
+        style={fit === "contain" && slides[index] ? { aspectRatio: `${slides[index].width} / ${slides[index].height}` } : undefined}
+      >
         {slides.map((slide, i) => (
           <Image
             key={`${slide.src}-${i}`}

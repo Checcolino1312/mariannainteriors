@@ -753,12 +753,12 @@ address {
 .carousel-frame--cover img {
   object-fit: cover;
 }
+/* Immagini intere (moodboard): nessun riquadro, il riquadro segue la proporzione dell'immagine */
 .carousel-frame--contain {
-  background-color: #fff;
+  background: transparent;
 }
 .carousel-frame--contain img {
   object-fit: contain;
-  padding: 6%;
 }
 .carousel-frame img.is-active {
   opacity: 1;
@@ -1474,6 +1474,11 @@ details p {
 }
 .detail-gallery .carousel-frame {
   height: clamp(390px, 47vw, 650px);
+}
+/* immagini intere: altezza data dalla proporzione dell'immagine, con un limite per quelle molto verticali */
+.detail-gallery .carousel-frame--contain {
+  height: auto;
+  max-height: min(650px, 80vh);
 }
 .detail-copy .eyebrow {
   letter-spacing: 1.4px;
